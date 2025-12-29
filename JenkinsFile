@@ -26,11 +26,14 @@ pipeline {
     stage('Deploy Frontend') {
       steps {
         sh '''
-          set -e
-          ssh -i "$SSH_KEY" -o StrictHostKeyChecking=accept-new $DEPLOY_USER@$DEPLOY_HOST "mkdir -p $FRONT_DST"
-          rsync -az --delete -e "ssh -i $SSH_KEY -o StrictHostKeyChecking=accept-new" frontend/dist/ $DEPLOY_USER@$DEPLOY_HOST:"$FRONT_DST"/
-          ssh -i "$SSH_KEY" -o StrictHostKeyChecking=accept-new $DEPLOY_USER@$DEPLOY_HOST "sudo systemctl reload nginx"
-        '''
+        set -e
+        BUILD_DIR="frontend/dist"
+        if [ -d "frontend/build" ]; then BUILD_DIR="frontend/build"; fi
+
+        ssh -i "$SSH_KEY" -o StrictHostKeyChecking=accept-new $DEPLOY_USER@$DEPLOY_HOST "mkdir -p $FRONT_DST"
+        rsync -az --delete -e "ssh -i $SSH_KEY -o StrictHostKeyChecking=accept-new" "$BUILD_DIR"/ $DEPLOY_USER@$DEPLOY_HOST:"$FRONT_DST"/
+        ssh -i "$SSH_KEY" -o StrictHostKeyChecking=accept-new $DEPLOY_USER@$DEPLOY_HOST "sudo systemctl reload nginx"
+      '''
       }
     }
 
