@@ -5,6 +5,118 @@
   text-align: center;
 }
 
+html, body {
+  overflow-y: auto;
+  height: auto;
+  min-height: 100vh;
+}
+
+.welcome-section {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+}
+
+/* About Me Card Styles */
+.about-me-container {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  background: rgba(36, 36, 36, 0.95);
+  border: 1px solid #646cff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  z-index: 1000;
+  min-width: 200px;
+  cursor: pointer;
+}
+
+.about-me-container.expanded {
+  max-width: 350px;
+  cursor: default;
+  max-height: calc(100vh - 40px - 3rem);
+  overflow-y: auto;
+}
+
+.about-me-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.about-me-header.expanded {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.profile-pic {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #646cff;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.profile-pic.expanded {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #646cff;
+  flex-shrink: 0;
+}
+
+.expand-btn {
+  color: #646cff;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.about-me-content {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #646cff33;
+  text-align: left;
+  animation: fadeIn 0.3s ease;
+}
+
+.about-me-content h3 {
+  margin: 0 0 0.5rem 0;
+  color: #fff;
+  font-size: 1.2rem;
+}
+
+.about-me-content p {
+  margin: 0.5rem 0;
+  color: #ccc;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.skill-tag {
+  background: #646cff22;
+  color: #646cff;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  border: 1px solid #646cff44;
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;
