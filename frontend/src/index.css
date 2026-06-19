@@ -1,42 +1,99 @@
+/* ─── Design Tokens ────────────────────────────────────────────────────
+ * All colours, spacing, radius, and breakpoint references live here.
+ * Components consume these vars — never hard-code values in component CSS.
+ * ──────────────────────────────────────────────────────────────────── */
 :root {
+  /* Typography */
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* Colour scheme */
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  /* Accent palette */
+  --color-accent:        #646cff;
+  --color-accent-hover:  #535bf2;
+  --color-accent-subtle: rgba(100, 108, 255, 0.13);
+  --color-accent-border: rgba(100, 108, 255, 0.27);
+
+  /* Surfaces & text */
+  --color-surface:      rgba(36, 36, 36, 0.95);
+  --color-text:         rgba(255, 255, 255, 0.87);
+  --color-text-muted:   #ccc;
+  --color-text-dimmed:  #888;
+  --color-bg:           #242424;
+
+  /* Spacing scale */
+  --space-2xs: 0.25rem;
+  --space-xs:  0.5rem;
+  --space-sm:  1rem;
+  --space-md:  1.5rem;
+  --space-lg:  2rem;
+  --space-xl:  3rem;
+
+  /* Shape */
+  --radius-sm:   6px;
+  --radius-card: 12px;
+  --radius-pill: 20px;
+
+  /* Touch targets (WCAG 2.5.5 — minimum 44 × 44 px) */
+  --tap-target-min: 44px;
+
+  /* Responsive breakpoints (reference only — use in media queries below)
+   *   sm:  480px   — large phones / landscape
+   *   md:  768px   — tablets
+   *   lg: 1024px   — small desktops
+   *   xl: 1280px   — wide desktops
+   */
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+/* Light-mode overrides */
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+    --color-text:        #213547;
+    --color-text-muted:  #444;
+    --color-text-dimmed: #666;
+    --color-bg:          #ffffff;
+    --color-surface:     rgba(240, 240, 255, 0.95);
+  }
+  a:hover { color: #747bff; }
+  button  { background-color: #f9f9f9; }
 }
-a:hover {
-  color: #535bf2;
+
+/* ─── Global Reset / Base ──────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+/* Fluid heading scale */
+h1 { font-size: clamp(1.8rem, 5vw, 3.2rem); line-height: 1.1; }
+h2 { font-size: clamp(1.4rem, 4vw, 2.2rem); line-height: 1.2; }
+h3 { font-size: clamp(1.1rem, 3vw, 1.5rem); line-height: 1.3; }
+
+a {
+  font-weight: 500;
+  color: var(--color-accent);
+  text-decoration: inherit;
 }
+a:hover { color: var(--color-accent-hover); }
 
 button {
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
   font-size: 1em;
@@ -45,24 +102,9 @@ button {
   background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
+  /* Ensure buttons meet minimum touch target height on mobile */
+  min-height: var(--tap-target-min);
 }
-button:hover {
-  border-color: #646cff;
-}
+button:hover       { border-color: var(--color-accent); }
 button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-}
+button:focus-visible { outline: 4px auto -webkit-focus-ring-color; }
