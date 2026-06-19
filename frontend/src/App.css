@@ -119,8 +119,8 @@
 }
 
 .logo {
-  height: clamp(3em, 10vw, 6em);
-  padding: 1em;
+  height: clamp(4.5em, 15vw, 6em);
+  padding: clamp(0.5em, 2vw, 1.5em);
   will-change: filter;
   transition: filter 300ms;
 }
