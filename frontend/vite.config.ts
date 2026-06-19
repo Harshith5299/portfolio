@@ -32,6 +32,10 @@ export default defineConfig({
         // Cache all static assets for offline support
         globPatterns: ['**/*.{js,css,html,svg,jpg,png,ico,woff2}'],
       },
+      devOptions: {
+        // Activate service worker in dev mode so PWA works via the dev server
+        enabled: true,
+      },
     }),
   ],
   server: {
