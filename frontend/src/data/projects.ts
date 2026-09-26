@@ -2,18 +2,13 @@ export type ProjectStatus = 'in-dev' | 'coming-soon' | 'live';
 export type { BuiltBy } from './shared';
 export { BUILT_BY_LABEL, BUILT_BY_TITLE, BUILT_BY_ICON } from './shared';
 
-import type { BuiltBy } from './shared';
+import type { CardItem } from './shared';
 
-export interface Project {
-  title: string;
-  description: string;
-  tags: string[];
+export interface Project extends CardItem {
   status: ProjectStatus;
   gradient: string;
   icon: string;
-  builtBy?: BuiltBy;
   liveUrl?: string;
-  repoUrl?: string;
 }
 
 export const PROJECTS: Project[] = [

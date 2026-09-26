@@ -1,5 +1,13 @@
 export type BuiltBy = 'solo' | 'agent-assisted' | 'collaborative';
 
+export interface CardItem {
+  title: string;
+  description: string;
+  tags: string[];
+  builtBy?: BuiltBy;
+  repoUrl?: string;
+}
+
 export const BUILT_BY_LABEL: Record<BuiltBy, string> = {
   solo: 'Built by me',
   'agent-assisted': 'Agent-assisted',

@@ -3,17 +3,12 @@ export type LearningType = 'course' | 'certification' | 'project';
 export type { BuiltBy } from './shared';
 export { BUILT_BY_LABEL, BUILT_BY_ICON } from './shared';
 
-import type { BuiltBy } from './shared';
+import type { CardItem } from './shared';
 
-export interface LearningItem {
-  title: string;
+export interface LearningItem extends CardItem {
   platform: string;
   type: LearningType;
   status: LearningStatus;
-  description: string;
-  tags: string[];
-  builtBy?: BuiltBy;
-  repoUrl?: string;
   certUrl?: string;
 }
 
