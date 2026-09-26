@@ -69,6 +69,18 @@ Shows on project and learning cards. Honest labelling helps recruiters see what'
 - `collaborative` — mix of hand-coded and agent-assisted
 - omit — unknown / not relevant
 
+## Agent conventions
+
+**This portfolio site** is intentionally built by AI coding agents. Agents write production code, open PRs, fix CI, and drive features end-to-end. Full autonomy here.
+
+**Learning & coursework projects** (the `LEARNING_ITEMS` with `builtBy: 'solo'` or no `builtBy`, plus any separate repos Buddy links from them) are hand-coded by Buddy for skill development. When an agent is asked to help with one of these, the correct posture is:
+
+- **Teach and review** — explain what the code should do, point out bugs, suggest approaches.
+- **Do not write the implementation** unless Buddy explicitly says "write it for me."
+- Code review, explanations, test ideas, and architecture guidance are all fair game; generating the solution is not.
+
+This distinction is intentional and important: the `builtBy: 'solo'` label on a learning item is a signal to all agents that they should step back from writing code there.
+
 ## Deploy
 
 Push to `main` → `deploy-prod.yml` triggers automatically (installs `uv` for Python, Node 24, `npm ci`, `npm run build`, Vercel deploy). No manual steps.
