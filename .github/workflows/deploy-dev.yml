@@ -1,0 +1,68 @@
+name: Deploy — Dev
+
+on:
+  push:
+    branches: [dev]
+
+jobs:
+  deploy-dev:
+    name: Build, Test & Deploy to Dev
+    runs-on: ubuntu-latest
+    environment:
+      name: development
+      url: ${{ steps.deploy.outputs.url }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Lint
+        working-directory: frontend
+        run: npm run lint
+
+      - name: Type check & build
+        working-directory: frontend
+        run: npm run build
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel@latest
+
+      - name: Pull Vercel environment info
+        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: Build on Vercel
+        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: Deploy preview
+        id: deploy
+        run: |
+          URL=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} 2>&1 | grep -E '^https://' | tail -1)
+          echo "url=$URL" >> $GITHUB_OUTPUT
+          echo "Preview URL: $URL"
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: Health check
+        run: |
+          URL="${{ steps.deploy.outputs.url }}"
+          echo "Checking $URL ..."
+          sleep 8
+          curl -fsS --max-time 15 "$URL" > /dev/null \
+            && echo "✓ Dev deployment is healthy" \
+            || (echo "✗ Health check failed" && exit 1)
