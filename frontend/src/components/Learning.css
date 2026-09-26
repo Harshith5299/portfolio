@@ -1,8 +1,3 @@
-.learning__subtitle {
-  color: var(--text-2);
-  font-size: 1rem;
-  margin-top: 12px;
-}
 
 .learning__grid {
   display: grid;
