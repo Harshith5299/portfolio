@@ -1,5 +1,8 @@
 export type ProjectStatus = 'in-dev' | 'coming-soon' | 'live';
-export type BuiltBy = 'solo' | 'agent-assisted' | 'collaborative';
+export type { BuiltBy } from './shared';
+export { BUILT_BY_LABEL, BUILT_BY_TITLE, BUILT_BY_ICON } from './shared';
+
+import type { BuiltBy } from './shared';
 
 export interface Project {
   title: string;
@@ -76,15 +79,3 @@ export const PROJECTS: Project[] = [
     repoUrl: 'https://github.com/Harshith5299/portfolio',
   },
 ];
-
-export const BUILT_BY_LABEL: Record<BuiltBy, string> = {
-  solo: 'Built by me',
-  'agent-assisted': 'Agent-assisted',
-  collaborative: 'Collaborative',
-};
-
-export const BUILT_BY_TITLE: Record<BuiltBy, string> = {
-  solo: 'Hand-coded — no AI generation',
-  'agent-assisted': 'Developed with AI coding agents',
-  collaborative: 'Mix of hand-coded and AI-assisted',
-};

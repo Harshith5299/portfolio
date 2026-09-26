@@ -1,6 +1,9 @@
 export type LearningStatus = 'completed' | 'in-progress' | 'planned';
 export type LearningType = 'course' | 'certification' | 'project';
-export type BuiltBy = 'solo' | 'agent-assisted' | 'collaborative';
+export type { BuiltBy } from './shared';
+export { BUILT_BY_LABEL, BUILT_BY_ICON } from './shared';
+
+import type { BuiltBy } from './shared';
 
 export interface LearningItem {
   title: string;
@@ -13,12 +16,6 @@ export interface LearningItem {
   repoUrl?: string;
   certUrl?: string;
 }
-
-export const BUILT_BY_LABEL: Record<BuiltBy, string> = {
-  solo: 'Built by me',
-  'agent-assisted': 'Agent-assisted',
-  collaborative: 'Collaborative',
-};
 
 // Add your courses, certifications, and personal learning projects here.
 // builtBy: 'solo' = hand-coded for learning; 'agent-assisted' = AI-helped; omit if not a project.

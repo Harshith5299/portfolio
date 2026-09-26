@@ -1,5 +1,5 @@
 import { useScrollReveal } from '../hooks/useScrollReveal';
-import { PROJECTS, BUILT_BY_LABEL, BUILT_BY_TITLE } from '../data/projects';
+import { PROJECTS, BUILT_BY_LABEL, BUILT_BY_TITLE, BUILT_BY_ICON } from '../data/projects';
 import type { ProjectStatus } from '../data/projects';
 import './Projects.css';
 
@@ -43,11 +43,10 @@ export function Projects() {
                   </span>
                   {project.builtBy && (
                     <span
-                      className={`project-card__built-by project-card__built-by--${project.builtBy}`}
+                      className={`built-by-badge built-by-badge--${project.builtBy}`}
                       title={BUILT_BY_TITLE[project.builtBy]}
                     >
-                      {project.builtBy === 'solo' ? '✍️' : project.builtBy === 'agent-assisted' ? '🤖' : '🤝'}
-                      {' '}{BUILT_BY_LABEL[project.builtBy]}
+                      {BUILT_BY_ICON[project.builtBy]} {BUILT_BY_LABEL[project.builtBy]}
                     </span>
                   )}
                 </div>

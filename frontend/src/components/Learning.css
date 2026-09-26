@@ -95,34 +95,6 @@
   animation: dot-pulse 1.5s ease-in-out infinite;
 }
 
-.learning-card__built-by {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 3px 9px;
-  border-radius: 20px;
-  font-size: 0.68rem;
-  font-weight: 500;
-}
-
-.learning-card__built-by--solo {
-  background: rgba(16, 185, 129, 0.12);
-  color: #6ee7b7;
-  border: 1px solid rgba(16, 185, 129, 0.2);
-}
-
-.learning-card__built-by--agent-assisted {
-  background: rgba(139, 92, 246, 0.12);
-  color: #c4b5fd;
-  border: 1px solid rgba(139, 92, 246, 0.2);
-}
-
-.learning-card__built-by--collaborative {
-  background: rgba(99, 102, 241, 0.12);
-  color: #a5b4fc;
-  border: 1px solid rgba(99, 102, 241, 0.2);
-}
-
 .learning-card__title {
   font-size: 1rem;
   font-weight: 700;

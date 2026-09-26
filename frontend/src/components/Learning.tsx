@@ -1,5 +1,5 @@
 import { useScrollReveal } from '../hooks/useScrollReveal';
-import { LEARNING_ITEMS, BUILT_BY_LABEL } from '../data/learning';
+import { LEARNING_ITEMS, BUILT_BY_LABEL, BUILT_BY_ICON } from '../data/learning';
 import type { LearningStatus, LearningType } from '../data/learning';
 import './Learning.css';
 
@@ -48,9 +48,8 @@ export function Learning() {
                       {STATUS_LABELS[item.status]}
                     </span>
                     {item.builtBy && (
-                      <span className={`learning-card__built-by learning-card__built-by--${item.builtBy}`}>
-                        {item.builtBy === 'solo' ? '✍️' : item.builtBy === 'agent-assisted' ? '🤖' : '🤝'}
-                        {' '}{BUILT_BY_LABEL[item.builtBy]}
+                      <span className={`built-by-badge built-by-badge--${item.builtBy}`}>
+                        {BUILT_BY_ICON[item.builtBy]} {BUILT_BY_LABEL[item.builtBy]}
                       </span>
                     )}
                   </div>
