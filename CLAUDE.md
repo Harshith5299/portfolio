@@ -1,0 +1,91 @@
+# Portfolio — Agent Guide
+
+Personal portfolio site for Harshith Chittajallu. Audience: software engineering recruiters and bots. URL: harshithportfolio.com.
+
+## Stack
+
+| Layer | Tech |
+|---|---|
+| Frontend | React 19, TypeScript, Vite, plain CSS |
+| Backend | Python Vercel Serverless Functions (`api/`) |
+| Deploy | Vercel (GitHub → auto-deploy on push to `main`) |
+| CI | GitHub Actions: `ci.yml` (lint + build), `deploy-prod.yml`, `trivy.yml`, `sonarcloud.yml` |
+| Analytics | Vercel Web Analytics + custom `/api/log` beacon |
+
+## Repo layout
+
+```
+frontend/           React SPA (Vite)
+  index.html        SEO: title, meta description, OG tags, JSON-LD Person schema
+  public/
+    favicon.svg     HC initials favicon
+    resume.pdf      ← ADD THIS: Buddy's CV (not yet in repo)
+    og-image.png    ← ADD THIS: 1200×630 OG preview image (not yet in repo)
+  src/
+    components/     One .tsx + .css file per section
+    data/
+      projects.ts   PROJECTS array — edit here to add/update portfolio projects
+      learning.ts   LEARNING_ITEMS array — edit here to add courses/certs
+    assets/         profile.jpg
+    hooks/          useScrollReveal
+api/                Python Vercel functions
+  contact.py        Contact form handler
+  log.py            Client-side error beacon (hardened, rate-limited)
+```
+
+## Sections (render order)
+
+1. **Hero** — name, typewriter roles, CTA buttons (View Projects, Get In Touch, Resume, GitHub, LinkedIn)
+2. **About** — bio and highlights
+3. **Skills** — skill groups grid
+4. **Projects** — portfolio projects from `src/data/projects.ts`
+5. **Learning** — courses/certs from `src/data/learning.ts`
+6. **Experience** — career timeline (inline data in `Experience.tsx`)
+7. **Contact** — form + links
+8. **Footer**
+
+Nav links mirror this order. Adding a new section: create `ComponentName.tsx` + `ComponentName.css`, import in `App.tsx`, add a `NAV_LINKS` entry in `Navbar.tsx`.
+
+## Content editing cheat-sheet
+
+**Add a portfolio project** → edit `src/data/projects.ts`, push to `PROJECTS`.
+Fields: `title`, `description`, `tags[]`, `status` (`live|in-dev|coming-soon`), `gradient`, `icon`, `builtBy` (`solo|agent-assisted|collaborative`), optional `liveUrl`, `repoUrl`.
+
+**Add a course / cert** → edit `src/data/learning.ts`, push to `LEARNING_ITEMS`.
+Fields: `title`, `platform`, `type` (`course|certification|project`), `status` (`planned|in-progress|completed`), `description`, `tags[]`, optional `builtBy`, `repoUrl`, `certUrl`.
+
+**Update experience** → edit the `EXPERIENCE` array in `src/components/Experience.tsx`.
+
+**Update skills** → edit `SKILL_GROUPS` in `src/components/Skills.tsx`.
+
+**Update social links / LinkedIn URL** → they appear in: `Hero.tsx` (CTAs), `Contact.tsx` (`CONTACT_LINKS`), `Footer.tsx`, and `index.html` (JSON-LD `sameAs`). Keep all four in sync.
+
+## `builtBy` badge convention
+
+Shows on project and learning cards. Honest labelling helps recruiters see what's hand-coded vs AI-assisted.
+
+- `solo` — Buddy wrote it by hand, for learning
+- `agent-assisted` — built with AI coding agents (this portfolio, main showcase projects)
+- `collaborative` — mix of hand-coded and agent-assisted
+- omit — unknown / not relevant
+
+## Deploy
+
+Push to `main` → `deploy-prod.yml` triggers automatically (installs `uv` for Python, Node 24, `npm ci`, `npm run build`, Vercel deploy). No manual steps.
+
+## Missing assets (action needed by Buddy)
+
+1. `frontend/public/resume.pdf` — add your CV here; the Resume button in the Hero links to `/resume.pdf`.
+2. `frontend/public/og-image.png` — 1200×630 px image for OG/Twitter previews; referenced in `index.html`.
+3. Verify LinkedIn URL `linkedin.com/in/harshith-chittajallu` is correct.
+4. Enable Vercel Analytics in the Vercel dashboard (Project → Analytics → Enable).
+
+## Commands
+
+```bash
+cd frontend
+npm ci          # install
+npm run dev     # dev server (http://localhost:5173)
+npm run build   # production build → dist/
+npm run lint    # ESLint
+```
