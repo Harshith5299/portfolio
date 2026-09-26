@@ -9,7 +9,7 @@ Personal portfolio site for Harshith Chittajallu. Audience: software engineering
 | Frontend | React 19, TypeScript, Vite, plain CSS |
 | Backend | Python Vercel Serverless Functions (`api/`) |
 | Deploy | Vercel (GitHub → auto-deploy on push to `main`) |
-| CI | GitHub Actions: `ci.yml` (lint + build), `deploy-prod.yml`, `trivy.yml`, `sonarcloud.yml` |
+| CI | GitHub Actions: `ci.yml` (lint + build), `deploy-prod.yml`, `trivy.yml`; SonarCloud Automatic Analysis (config in `.sonarcloud.properties`) |
 | Analytics | Vercel Web Analytics + custom `/api/log` beacon |
 
 ## Repo layout
