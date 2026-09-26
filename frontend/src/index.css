@@ -173,3 +173,63 @@ button {
     padding: 0 16px;
   }
 }
+
+/* Shared section subtitle */
+.section-subtitle {
+  color: var(--text-2);
+  font-size: 1rem;
+  margin-top: 12px;
+}
+
+/* Shared card utilities — used by Projects and Learning cards */
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.card-tag {
+  padding: 3px 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-size: 0.72rem;
+  color: var(--text-2);
+}
+
+.card-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+/* Shared builtBy badge — used by Projects and Learning cards */
+.built-by-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 9px;
+  border-radius: 20px;
+  font-size: 0.68rem;
+  font-weight: 500;
+  backdrop-filter: blur(4px);
+}
+
+.built-by-badge--solo {
+  background: rgba(16, 185, 129, 0.15);
+  color: #6ee7b7;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.built-by-badge--agent-assisted {
+  background: rgba(139, 92, 246, 0.15);
+  color: #c4b5fd;
+  border: 1px solid rgba(139, 92, 246, 0.2);
+}
+
+.built-by-badge--collaborative {
+  background: rgba(99, 102, 241, 0.15);
+  color: #a5b4fc;
+  border: 1px solid rgba(99, 102, 241, 0.2);
+}

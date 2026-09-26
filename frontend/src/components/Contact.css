@@ -9,11 +9,6 @@
   pointer-events: none;
 }
 
-.contact__subtitle {
-  color: var(--text-2);
-  font-size: 1rem;
-  margin-top: 12px;
-}
 
 .contact__grid {
   display: grid;

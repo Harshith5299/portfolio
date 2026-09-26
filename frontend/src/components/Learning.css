@@ -1,0 +1,112 @@
+
+.learning__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.learning-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+
+.learning-card:hover {
+  border-color: var(--border-accent);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow);
+}
+
+.learning-card__header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.learning-card__type-icon {
+  font-size: 1.75rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.learning-card__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.learning-card__platform {
+  font-size: 0.8rem;
+  color: var(--text-2);
+  font-weight: 500;
+}
+
+.learning-card__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.learning-card__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border-radius: 20px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.learning-card__status--completed {
+  background: rgba(16, 185, 129, 0.15);
+  color: #6ee7b7;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.learning-card__status--in-progress {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.learning-card__status--planned {
+  background: rgba(99, 102, 241, 0.1);
+  color: var(--text-2);
+  border: 1px solid var(--border);
+}
+
+.learning-card__dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #fbbf24;
+  animation: dot-pulse 1.5s ease-in-out infinite;
+}
+
+.learning-card__title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.4;
+}
+
+.learning-card__desc {
+  font-size: 0.85rem;
+  color: var(--text-2);
+  line-height: 1.6;
+  flex: 1;
+}
+
+
+@media (max-width: 768px) {
+  .learning__grid {
+    grid-template-columns: 1fr;
+  }
+}

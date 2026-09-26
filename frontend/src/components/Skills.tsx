@@ -52,7 +52,7 @@ export function Skills() {
           <h2 className="section-title">
             My <span>Technical Toolkit</span>
           </h2>
-          <p className="skills__subtitle">
+          <p className="section-subtitle">
             Across the full stack — from agentic AI to cloud infrastructure
           </p>
         </div>
