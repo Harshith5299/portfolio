@@ -109,27 +109,6 @@
   flex: 1;
 }
 
-.learning-card__tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.learning-card__tag {
-  padding: 3px 10px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  font-size: 0.72rem;
-  color: var(--text-2);
-}
-
-.learning-card__actions {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-top: 4px;
-}
 
 @media (max-width: 768px) {
   .learning__grid {

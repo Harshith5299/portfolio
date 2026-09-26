@@ -56,13 +56,13 @@ export function Projects() {
                 <h3 className="project-card__title">{project.title}</h3>
                 <p className="project-card__desc">{project.description}</p>
 
-                <div className="project-card__tags">
+                <div className="card-tags">
                   {project.tags.map(tag => (
-                    <span key={tag} className="project-card__tag">{tag}</span>
+                    <span key={tag} className="card-tag">{tag}</span>
                   ))}
                 </div>
 
-                <div className="project-card__actions">
+                <div className="card-actions">
                   {project.liveUrl ? (
                     <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary btn--sm">
                       <svg viewBox="0 0 20 20" width="14" height="14" fill="currentColor">

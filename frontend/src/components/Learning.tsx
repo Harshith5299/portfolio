@@ -59,14 +59,14 @@ export function Learning() {
               <h3 className="learning-card__title">{item.title}</h3>
               <p className="learning-card__desc">{item.description}</p>
 
-              <div className="learning-card__tags">
+              <div className="card-tags">
                 {item.tags.map(tag => (
-                  <span key={tag} className="learning-card__tag">{tag}</span>
+                  <span key={tag} className="card-tag">{tag}</span>
                 ))}
               </div>
 
               {(item.repoUrl || item.certUrl) && (
-                <div className="learning-card__actions">
+                <div className="card-actions">
                   {item.repoUrl && (
                     <a href={item.repoUrl} target="_blank" rel="noopener noreferrer" className="btn btn-ghost btn--sm">
                       <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">

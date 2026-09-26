@@ -174,6 +174,29 @@ button {
   }
 }
 
+/* Shared card utilities — used by Projects and Learning cards */
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.card-tag {
+  padding: 3px 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-size: 0.72rem;
+  color: var(--text-2);
+}
+
+.card-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
 /* Shared builtBy badge — used by Projects and Learning cards */
 .built-by-badge {
   display: inline-flex;
