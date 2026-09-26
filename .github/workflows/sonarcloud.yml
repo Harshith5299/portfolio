@@ -1,0 +1,29 @@
+name: SonarCloud Analysis
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  sonarcloud:
+    name: SonarCloud Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # full history for blame/new-code analysis
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarqube-scan-action@v5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.organization=harshith5299
+            -Dsonar.projectKey=Harshith5299_portfolio
+            -Dsonar.sources=frontend/src,backend
+            -Dsonar.exclusions=**/node_modules/**,**/dist/**,**/*.test.*
+            -Dsonar.javascript.lcov.reportPaths=frontend/coverage/lcov.info
