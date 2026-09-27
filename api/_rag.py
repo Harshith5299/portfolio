@@ -19,9 +19,17 @@ BM25_K1 = 1.4
 BM25_B = 0.75
 TITLE_WEIGHT = 2  # title tokens count this many times
 
-DEFAULT_MODEL = "claude-opus-5"
+# Short, cited answers don't need a large model; Haiku keeps per-answer cost low.
+DEFAULT_MODEL = "claude-haiku-4-5"
 GATEWAY_URL = "https://ai-gateway.vercel.sh"
-GATEWAY_DEFAULT_MODEL = "anthropic/claude-opus-5"
+GATEWAY_DEFAULT_MODEL = "anthropic/claude-haiku-4.5"
+MAX_ANSWER_TOKENS = 400
+
+# Spend caps on model calls, per warm instance and UTC day. Past a cap the
+# assistant still answers, extractively, at no cost.
+DAILY_CAP = int(os.environ.get("ASK_DAILY_CAP", "200"))
+CLIENT_DAILY_CAP = int(os.environ.get("ASK_CLIENT_DAILY_CAP", "20"))
+_usage = {"day": "", "total": 0, "clients": {}}
 
 STOPWORDS = frozenset(
     "a an and are as at be but by can did do does for from has have he her him his how i in is it its "
@@ -143,17 +151,17 @@ def _backend() -> str | None:
     return None
 
 
-def _create(client, backend: str, **params):
-    if backend == "anthropic":
-        # Direct API: low effort plus server-side refusal fallbacks.
-        return client.beta.messages.create(
-            **params,
-            output_config={"effort": "low"},
-            betas=["server-side-fallback-2026-07-01"],
-            fallbacks="default",
-        )
-    # AI Gateway speaks the core Messages API; beta-only fields are left off.
-    return client.messages.create(**params)
+def _within_budget(client_id: str) -> bool:
+    """Count one model call against today's caps; False once either cap is reached."""
+    day = time.strftime("%Y-%m-%d", time.gmtime())
+    if _usage["day"] != day:
+        _usage.update(day=day, total=0, clients={})
+    used = _usage["clients"].get(client_id, 0)
+    if _usage["total"] >= DAILY_CAP or used >= CLIENT_DAILY_CAP:
+        return False
+    _usage["total"] += 1
+    _usage["clients"][client_id] = used + 1
+    return True
 
 
 def generate(question: str, passages: list[dict], backend: str) -> tuple[str, str]:
@@ -172,11 +180,9 @@ def generate(question: str, passages: list[dict], backend: str) -> tuple[str, st
         model = os.environ.get("ASK_MODEL", DEFAULT_MODEL)
         client = anthropic.Anthropic(timeout=25.0, max_retries=1)
 
-    response = _create(
-        client,
-        backend,
+    response = client.messages.create(
         model=model,
-        max_tokens=1024,
+        max_tokens=MAX_ANSWER_TOKENS,
         system=SYSTEM_PROMPT,
         messages=[
             {
@@ -193,14 +199,14 @@ def generate(question: str, passages: list[dict], backend: str) -> tuple[str, st
     return text, response.model
 
 
-def answer(question: str, log=None) -> dict:
+def answer(question: str, log=None, client_id: str = "") -> dict:
     t0 = time.perf_counter()
     passages = retrieve(question)
     retrieve_ms = round((time.perf_counter() - t0) * 1000, 1)
 
     mode, model, text = "retrieval", None, None
     backend = _backend()
-    if passages and backend:
+    if passages and backend and _within_budget(client_id):
         try:
             text, model = generate(question, passages, backend)
             mode = "generated"

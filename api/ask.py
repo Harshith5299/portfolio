@@ -58,7 +58,7 @@ class handler(BaseHTTPRequestHandler):
             self._respond(429, {"error": "Too many questions. Try again in a minute."})
             return
 
-        result = answer(question, log=log)
+        result = answer(question, log=log, client_id=client_id)
         log(
             "info",
             "ask answered",

@@ -92,7 +92,7 @@ This distinction is intentional and important: the `builtBy: 'solo'` label on a 
 
 ## Ask My Portfolio (RAG demo)
 
-`/ask` answers questions from the passages in `api/_knowledge.py` only. When you change Experience, Skills, About or Projects content, update the matching passage there too. Generation uses Claude when either `ANTHROPIC_API_KEY` (direct) or `AI_GATEWAY_API_KEY` (Vercel AI Gateway, model `anthropic/claude-opus-5`) is set in Vercel; `ASK_MODEL` overrides the model; without it the endpoint answers extractively and the page shows "Retrieval only". Tests: `python3 -m unittest discover tests` (needs `pip install -r requirements.txt`).
+`/ask` answers questions from the passages in `api/_knowledge.py` only. When you change Experience, Skills, About or Projects content, update the matching passage there too. Generation uses Claude when either `ANTHROPIC_API_KEY` (direct) or `AI_GATEWAY_API_KEY` (Vercel AI Gateway) is set in Vercel. It uses Claude Haiku 4.5 (`ASK_MODEL` overrides) and caps model calls at `ASK_DAILY_CAP` (200) per day and `ASK_CLIENT_DAILY_CAP` (20) per visitor per day, per warm instance; past a cap it answers extractively for free; without it the endpoint answers extractively and the page shows "Retrieval only". Tests: `python3 -m unittest discover tests` (needs `pip install -r requirements.txt`).
 
 ## Deploy
 
