@@ -314,15 +314,6 @@
   flex-shrink: 0;
 }
 
-/* Amazon 'a' initial mark */
-.hero__company-icon--amazon {
-  font-size: 1.15rem;
-  font-weight: 900;
-  font-style: italic;
-  line-height: 1;
-  letter-spacing: -0.03em;
-}
-
 /* Amazon brand: #FF9900 */
 .hero__company--amazon {
   color: #FF9900;
