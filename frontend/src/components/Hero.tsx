@@ -1,4 +1,5 @@
 import profilePic from '../assets/profile.jpg';
+import profilePicWebp from '../assets/profile.webp';
 import { GitHubIcon } from './Icons';
 import './Hero.css';
 
@@ -76,7 +77,10 @@ export function Hero() {
         <div className="hero__image">
           <div className="hero__image-ring" aria-hidden />
           <div className="hero__image-ring hero__image-ring--2" aria-hidden />
-          <img src={profilePic} alt="Harshith Chittajallu" className="hero__photo" />
+          <picture>
+            <source srcSet={profilePicWebp} type="image/webp" />
+            <img src={profilePic} alt="Harshith Chittajallu" className="hero__photo" />
+          </picture>
         </div>
       </div>
 
