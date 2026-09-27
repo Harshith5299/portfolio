@@ -8,7 +8,7 @@ test('each nav link scrolls its section into view', async ({ page, isMobile }) =
     if (isMobile) await page.getByRole('button', { name: 'Toggle navigation' }).click();
     await page.locator('.navbar__links').getByRole('link', { name: label, exact: true }).click();
     const id = label.toLowerCase();
-    await expect(page).toHaveURL(new RegExp(`#${id}$`));
+    await expect(page).toHaveURL(url => url.hash === `#${id}`);
     await expect(page.locator(`#${id}`)).toBeInViewport();
   }
 });
