@@ -311,12 +311,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  font-size: 0.65rem;
-  font-weight: 800;
   flex-shrink: 0;
+  opacity: 0.85;
 }
 
 .hero__company--amazon {
@@ -329,12 +325,6 @@
   box-shadow: 0 4px 12px rgba(255, 153, 0, 0.2);
 }
 
-.hero__company--amazon .hero__company-icon {
-  background: #FF9900;
-  color: #111;
-  font-style: italic;
-}
-
 .hero__company--ge {
   color: #4A9EE0;
   background: rgba(74, 158, 224, 0.08);
@@ -345,12 +335,6 @@
   box-shadow: 0 4px 12px rgba(74, 158, 224, 0.2);
 }
 
-.hero__company--ge .hero__company-icon {
-  background: #4A9EE0;
-  color: #fff;
-  font-size: 0.55rem;
-}
-
 .hero__company--wf {
   color: #e8473f;
   background: rgba(232, 71, 63, 0.08);
@@ -359,12 +343,6 @@
 
 .hero__company--wf:hover {
   box-shadow: 0 4px 12px rgba(232, 71, 63, 0.2);
-}
-
-.hero__company--wf .hero__company-icon {
-  background: #e8473f;
-  color: #fff;
-  font-size: 0.55rem;
 }
 
 .hero__companies-sep {
