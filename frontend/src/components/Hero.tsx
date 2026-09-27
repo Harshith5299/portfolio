@@ -105,20 +105,20 @@ export function Hero() {
       <div className="hero__featured">
         {[
           {
-            icon: '🔄',
-            title: 'Event Syncer',
-            status: 'live' as const,
-            desc: 'CRM & calendar reconciliation engine — normalises records, scores cross-source matches, and flags data-quality issues.',
-            tags: ['Python', 'FastAPI', 'React'],
-            href: 'https://github.com/Harshith5299/event_syncer',
+            icon: '🎬',
+            title: 'Netflix Clone',
+            status: 'in-dev' as const,
+            desc: 'Full-stack streaming platform with user authentication, dynamic content catalogues, and personalised ML recommendations.',
+            tags: ['React', 'FastAPI', 'PostgreSQL'],
+            href: '#projects',
           },
           {
-            icon: '🏦',
-            title: 'Spring Bank',
-            status: 'live' as const,
-            desc: 'Full-stack banking app with Spring Boot REST API, MySQL, and a React frontend for accounts, transfers, and history.',
-            tags: ['Java', 'Spring Boot', 'React'],
-            href: 'https://github.com/Harshith5299/spring-bank',
+            icon: '▶️',
+            title: 'YouTube Clone',
+            status: 'in-dev' as const,
+            desc: 'Video-sharing platform with upload/transcode pipeline, search, subscriptions, and microservices architecture.',
+            tags: ['React', 'Kafka', 'FFmpeg'],
+            href: '#projects',
           },
           {
             icon: '🛡️',
