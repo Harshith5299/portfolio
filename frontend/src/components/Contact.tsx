@@ -41,6 +41,7 @@ export function Contact() {
   const ref = useScrollReveal<HTMLElement>();
   const [formState, setFormState] = useState<FormState>('idle');
   const [fields, setFields] = useState({ name: '', email: '', message: '' });
+  const [errorMsg, setErrorMsg] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFields(f => ({ ...f, [e.target.name]: e.target.value }));
@@ -59,9 +60,13 @@ export function Contact() {
         setFormState('success');
         setFields({ name: '', email: '', message: '' });
       } else {
+        // 400s carry a user-facing validation message; anything else is on our side.
+        const body = await res.json().catch(() => null);
+        setErrorMsg(res.status === 400 && body?.error ? body.error : '');
         setFormState('error');
       }
     } catch {
+      setErrorMsg('');
       setFormState('error');
     }
   };
@@ -157,7 +162,14 @@ export function Contact() {
 
             {formState === 'error' && (
               <div className="contact__feedback contact__feedback--error">
-                ✗ Something went wrong. Please try emailing me directly.
+                {errorMsg ? (
+                  <>✗ {errorMsg}</>
+                ) : (
+                  <>
+                    ✗ Something went wrong. Please email me directly at{' '}
+                    <a href={CONTACT_LINKS[0].href}>{CONTACT_LINKS[0].value}</a>.
+                  </>
+                )}
               </div>
             )}
 

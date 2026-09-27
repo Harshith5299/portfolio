@@ -35,7 +35,7 @@ api/                Python Vercel functions
   _rag.py           BM25 retrieval + Claude generation, extractive fallback
   _pow.py           Proof-of-work bot check required before any model call
   _knowledge.py     Passages the assistant may answer from; keep in sync with site content
-  contact.py        Contact form handler
+  contact.py        Contact form handler (sends via Resend)
   log.py            Client-side error beacon (hardened, rate-limited)
 docs/               Agent-readable documentation
   AGENT_GUIDE.md    Comprehensive guide for AI agents working in this repo
@@ -111,10 +111,11 @@ Push to `main` → `deploy-prod.yml` triggers automatically (installs `uv` for P
 
 ## Missing assets (action needed by Buddy)
 
-1. `frontend/public/resume.pdf` — add your CV here. The Hero's Resume button is hidden until this file exists (`__HAS_RESUME__` in `vite.config.ts`) and appears automatically once it is committed.
+1. `frontend/public/resume.pdf` — add your CV here. The Hero Resume button is hidden until this file exists (checked at build time in `vite.config.ts`).
 2. `frontend/public/og-image.png` — 1200×630 px image for OG/Twitter previews; referenced in `index.html`.
 3. LinkedIn URL is `linkedin.com/in/harshith-ch` — confirmed correct.
 4. Enable Vercel Analytics in the Vercel dashboard (Project → Analytics → Enable).
+5. Contact form email: set `RESEND_API_KEY` in Vercel (Production + Preview). Optional `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL` (sender on a Resend-verified domain; the default `onboarding@resend.dev` only delivers to the Resend account owner's address). Without the key, `/api/contact` returns 503 and the form tells visitors to email directly.
 
 ## Commands
 
