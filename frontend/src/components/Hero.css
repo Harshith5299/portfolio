@@ -312,37 +312,48 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  opacity: 0.85;
 }
 
+/* Amazon 'a' initial mark */
+.hero__company-icon--amazon {
+  font-size: 1.15rem;
+  font-weight: 900;
+  font-style: italic;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+/* Amazon brand: #FF9900 */
 .hero__company--amazon {
   color: #FF9900;
-  background: rgba(255, 153, 0, 0.08);
-  border-color: rgba(255, 153, 0, 0.3);
+  background: rgba(255, 153, 0, 0.1);
+  border-color: rgba(255, 153, 0, 0.35);
 }
 
 .hero__company--amazon:hover {
-  box-shadow: 0 4px 12px rgba(255, 153, 0, 0.2);
+  box-shadow: 0 4px 14px rgba(255, 153, 0, 0.25);
 }
 
+/* GE brand: #0870D8 (Simple Icons official hex) */
 .hero__company--ge {
-  color: #4A9EE0;
-  background: rgba(74, 158, 224, 0.08);
-  border-color: rgba(74, 158, 224, 0.3);
+  color: #0870D8;
+  background: rgba(8, 112, 216, 0.08);
+  border-color: rgba(8, 112, 216, 0.3);
 }
 
 .hero__company--ge:hover {
-  box-shadow: 0 4px 12px rgba(74, 158, 224, 0.2);
+  box-shadow: 0 4px 14px rgba(8, 112, 216, 0.2);
 }
 
+/* Wells Fargo brand: #D71E28 (Simple Icons official hex) */
 .hero__company--wf {
-  color: #e8473f;
-  background: rgba(232, 71, 63, 0.08);
-  border-color: rgba(232, 71, 63, 0.3);
+  color: #D71E28;
+  background: rgba(215, 30, 40, 0.08);
+  border-color: rgba(215, 30, 40, 0.3);
 }
 
 .hero__company--wf:hover {
-  box-shadow: 0 4px 12px rgba(232, 71, 63, 0.2);
+  box-shadow: 0 4px 14px rgba(215, 30, 40, 0.2);
 }
 
 .hero__companies-sep {
