@@ -75,6 +75,7 @@ class handler(BaseHTTPRequestHandler):
             "ask answered",
             question_len=len(question),
             mode=result["mode"],
+            reason=result["reason"],
             verified=verified,
             sources=[s["id"] for s in result["sources"]],
             total_ms=result["timings"]["total_ms"],

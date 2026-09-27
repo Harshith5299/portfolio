@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { track } from '@vercel/analytics';
 import { GitHubIcon } from '../components/Icons';
 import { solveChallenge, type Proof } from './pow';
 import './AskApp.css';
@@ -15,6 +16,7 @@ interface Source {
 interface AskResponse {
   answer: string;
   mode: 'generated' | 'retrieval';
+  reason: 'generated' | 'no_match' | 'no_key' | 'bot_check_failed' | 'daily_cap' | 'model_error';
   model: string | null;
   sources: Source[];
   timings: { retrieve_ms: number; total_ms: number };
@@ -132,9 +134,12 @@ export function AskApp() {
       });
       const body = await res.json().catch(() => null);
       if (!res.ok || !body) throw new Error(body?.error ?? 'The assistant is unavailable right now.');
-      setTurns(t => [...t, { role: 'assistant', data: body as AskResponse }]);
+      const data = body as AskResponse;
+      track('Ask Answered', { mode: data.mode, reason: data.reason, botCheck: proof ? 'solved' : 'unsolved' });
+      setTurns(t => [...t, { role: 'assistant', data }]);
     } catch (err) {
       const text = err instanceof Error ? err.message : 'Something went wrong.';
+      track('Ask Failed', { error: text.slice(0, 100) });
       setTurns(t => [...t, { role: 'error', text }]);
     } finally {
       setLoading(false);

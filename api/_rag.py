@@ -205,12 +205,23 @@ def answer(question: str, log=None, client_id: str = "", allow_model: bool = Tru
     retrieve_ms = round((time.perf_counter() - t0) * 1000, 1)
 
     mode, model, text = "retrieval", None, None
+    # Why the answer was or wasn't generated; reported to analytics by the page.
     backend = _backend()
-    if passages and backend and allow_model and _within_budget(client_id):
+    if not passages:
+        reason = "no_match"
+    elif not backend:
+        reason = "no_key"
+    elif not allow_model:
+        reason = "bot_check_failed"
+    elif not _within_budget(client_id):
+        reason = "daily_cap"
+    else:
+        reason = "generated"
         try:
             text, model = generate(question, passages, backend)
             mode = "generated"
         except Exception as exc:  # any SDK or network failure falls back to extractive
+            reason = "model_error"
             if log:
                 log("error", "ask generation failed", error=str(exc)[:300])
     if text is None:
@@ -219,6 +230,7 @@ def answer(question: str, log=None, client_id: str = "", allow_model: bool = Tru
     return {
         "answer": text,
         "mode": mode,
+        "reason": reason,
         "model": model,
         "sources": [
             {"n": i, "id": p["id"], "title": p["title"], "section": p["section"], "score": p["score"], "text": p["text"]}
