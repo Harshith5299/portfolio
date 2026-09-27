@@ -1,8 +1,9 @@
 """Retrieval + generation for the "Ask My Portfolio" assistant.
 
 Retrieval is dependency-free BM25 over api/_knowledge.py. Generation calls
-Claude through the Anthropic SDK when ANTHROPIC_API_KEY is set; without a key
-(or if the call fails) the assistant answers extractively from the retrieved
+Claude through the Anthropic SDK, either directly (ANTHROPIC_API_KEY) or via
+Vercel AI Gateway's Anthropic-compatible endpoint (AI_GATEWAY_API_KEY). With
+neither key (or if the call fails) the assistant answers extractively from the retrieved
 passages, so the demo always responds.
 """
 import math
@@ -19,6 +20,8 @@ BM25_B = 0.75
 TITLE_WEIGHT = 2  # title tokens count this many times
 
 DEFAULT_MODEL = "claude-opus-5"
+GATEWAY_URL = "https://ai-gateway.vercel.sh"
+GATEWAY_DEFAULT_MODEL = "anthropic/claude-opus-5"
 
 STOPWORDS = frozenset(
     "a an and are as at be but by can did do does for from has have he her him his how i in is it its "
@@ -131,19 +134,50 @@ def extractive_answer(question: str, passages: list[dict]) -> str:
     return " ".join(picks)
 
 
-def generate(question: str, passages: list[dict]) -> tuple[str, str]:
+def _backend() -> str | None:
+    """Which Claude route is configured: direct Anthropic API, Vercel AI Gateway, or none."""
+    if os.environ.get("ANTHROPIC_API_KEY"):
+        return "anthropic"
+    if os.environ.get("AI_GATEWAY_API_KEY"):
+        return "gateway"
+    return None
+
+
+def _create(client, backend: str, **params):
+    if backend == "anthropic":
+        # Direct API: low effort plus server-side refusal fallbacks.
+        return client.beta.messages.create(
+            **params,
+            output_config={"effort": "low"},
+            betas=["server-side-fallback-2026-07-01"],
+            fallbacks="default",
+        )
+    # AI Gateway speaks the core Messages API; beta-only fields are left off.
+    return client.messages.create(**params)
+
+
+def generate(question: str, passages: list[dict], backend: str) -> tuple[str, str]:
     """Return (answer, model). Raises on API failure so the caller can fall back."""
     import anthropic  # imported lazily so retrieval mode works without the SDK
 
-    model = os.environ.get("ASK_MODEL", DEFAULT_MODEL)
-    client = anthropic.Anthropic(timeout=25.0, max_retries=1)
-    response = client.beta.messages.create(
+    if backend == "gateway":
+        model = os.environ.get("ASK_MODEL", GATEWAY_DEFAULT_MODEL)
+        client = anthropic.Anthropic(
+            api_key=os.environ["AI_GATEWAY_API_KEY"],
+            base_url=os.environ.get("AI_GATEWAY_BASE_URL", GATEWAY_URL),
+            timeout=25.0,
+            max_retries=1,
+        )
+    else:
+        model = os.environ.get("ASK_MODEL", DEFAULT_MODEL)
+        client = anthropic.Anthropic(timeout=25.0, max_retries=1)
+
+    response = _create(
+        client,
+        backend,
         model=model,
         max_tokens=1024,
         system=SYSTEM_PROMPT,
-        output_config={"effort": "low"},
-        betas=["server-side-fallback-2026-07-01"],
-        fallbacks="default",
         messages=[
             {
                 "role": "user",
@@ -165,9 +199,10 @@ def answer(question: str, log=None) -> dict:
     retrieve_ms = round((time.perf_counter() - t0) * 1000, 1)
 
     mode, model, text = "retrieval", None, None
-    if passages and os.environ.get("ANTHROPIC_API_KEY"):
+    backend = _backend()
+    if passages and backend:
         try:
-            text, model = generate(question, passages)
+            text, model = generate(question, passages, backend)
             mode = "generated"
         except Exception as exc:  # any SDK or network failure falls back to extractive
             if log:

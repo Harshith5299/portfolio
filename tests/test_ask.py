@@ -77,6 +77,20 @@ class GenerationTests(unittest.TestCase):
         self.assertEqual(body["fallbacks"], "default")
         self.assertIn("[1] AI and agentic systems skills", body["messages"][0]["content"])
 
+    def test_generates_via_ai_gateway_key(self):
+        fake = serve(FakeClaude)
+        os.environ.update(AI_GATEWAY_API_KEY=FAKE_KEY, AI_GATEWAY_BASE_URL=f"http://127.0.0.1:{fake.server_port}")
+        try:
+            result = _rag.answer("What AI experience does he have?")
+        finally:
+            os.environ.pop("AI_GATEWAY_API_KEY")
+            os.environ.pop("AI_GATEWAY_BASE_URL")
+            fake.shutdown()
+        self.assertEqual(result["mode"], "generated")
+        body = FakeClaude.last_body
+        self.assertEqual(body["model"], "anthropic/claude-opus-5")
+        self.assertNotIn("fallbacks", body)
+
     def test_falls_back_when_api_unreachable(self):
         os.environ.update(ANTHROPIC_API_KEY=FAKE_KEY, ANTHROPIC_BASE_URL="http://127.0.0.1:9")
         try:
