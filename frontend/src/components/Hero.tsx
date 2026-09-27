@@ -16,6 +16,14 @@ export function Hero() {
           <div className="hero__role-line">
             <span className="hero__role">Full Stack &amp; Gen AI Developer</span>
           </div>
+          <div className="hero__companies">
+            <span className="hero__companies-label">Previously at</span>
+            <span className="hero__company">Company A</span>
+            <span className="hero__companies-sep">·</span>
+            <span className="hero__company">Company B</span>
+            <span className="hero__companies-sep">·</span>
+            <span className="hero__company">Company C</span>
+          </div>
           <p className="hero__tagline">
             Building scalable backend services, modern web UIs, and AI&#8209;driven
             applications that help teams make faster, smarter decisions.
@@ -54,6 +62,16 @@ export function Hero() {
               </svg>
               LinkedIn
             </a>
+            <a
+              href="mailto:harshithchittajallu5299@gmail.com"
+              className="btn btn-ghost"
+            >
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                <path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z" />
+                <path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z" />
+              </svg>
+              Email
+            </a>
           </div>
 
           <div className="hero__stats">
@@ -82,6 +100,57 @@ export function Hero() {
             <img src={profilePic} alt="Harshith Chittajallu" className="hero__photo" />
           </picture>
         </div>
+      </div>
+
+      <div className="hero__featured">
+        {[
+          {
+            icon: '🔄',
+            title: 'Event Syncer',
+            status: 'live' as const,
+            desc: 'CRM & calendar reconciliation engine — normalises records, scores cross-source matches, and flags data-quality issues.',
+            tags: ['Python', 'FastAPI', 'React'],
+            href: 'https://github.com/Harshith5299/event_syncer',
+          },
+          {
+            icon: '🏦',
+            title: 'Spring Bank',
+            status: 'live' as const,
+            desc: 'Full-stack banking app with Spring Boot REST API, MySQL, and a React frontend for accounts, transfers, and history.',
+            tags: ['Java', 'Spring Boot', 'React'],
+            href: 'https://github.com/Harshith5299/spring-bank',
+          },
+          {
+            icon: '🛡️',
+            title: 'Cybersecurity Dashboard',
+            status: 'in-dev' as const,
+            desc: 'AI-driven banking security tool using LangGraph agents to surface contextual risk insights and reduce manual review time.',
+            tags: ['LangGraph', 'FastAPI', 'AWS'],
+            href: '#projects',
+          },
+        ].map(p => (
+          <a
+            key={p.title}
+            href={p.href}
+            className="hero__feat-card"
+            target={p.href.startsWith('http') ? '_blank' : undefined}
+            rel={p.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+          >
+            <div className="hero__feat-header">
+              <div className="hero__feat-icon-title">
+                <span className="hero__feat-icon">{p.icon}</span>
+                <span className="hero__feat-title">{p.title}</span>
+              </div>
+              <span className={`hero__feat-status hero__feat-status--${p.status === 'live' ? 'live' : 'in-dev'}`}>
+                {p.status === 'live' ? 'Live' : 'In Dev'}
+              </span>
+            </div>
+            <p className="hero__feat-desc">{p.desc}</p>
+            <div className="hero__feat-tags">
+              {p.tags.map(t => <span key={t} className="hero__feat-tag">{t}</span>)}
+            </div>
+          </a>
+        ))}
       </div>
 
     </section>
