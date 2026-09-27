@@ -29,7 +29,11 @@ frontend/           React SPA (Vite)
       learning.ts   LEARNING_ITEMS array — edit here to add courses/certs
     assets/         profile.jpg
     hooks/          useScrollReveal
+frontend/ask.html   Second Vite page: the /ask RAG demo (src/ask/AskApp.tsx)
 api/                Python Vercel functions
+  ask.py            "Ask My Portfolio" RAG endpoint (POST /api/ask)
+  _rag.py           BM25 retrieval + Claude generation, extractive fallback
+  _knowledge.py     Passages the assistant may answer from; keep in sync with site content
   contact.py        Contact form handler
   log.py            Client-side error beacon (hardened, rate-limited)
 docs/               Agent-readable documentation
@@ -85,6 +89,10 @@ Shows on project and learning cards. Honest labelling helps recruiters see what'
 - Code review, explanations, test ideas, and architecture guidance are all fair game; generating the solution is not.
 
 This distinction is intentional and important: the `builtBy: 'solo'` label on a learning item is a signal to all agents that they should step back from writing code there.
+
+## Ask My Portfolio (RAG demo)
+
+`/ask` answers questions from the passages in `api/_knowledge.py` only. When you change Experience, Skills, About or Projects content, update the matching passage there too. Generation uses Claude when the `ANTHROPIC_API_KEY` env var is set in Vercel (model override: `ASK_MODEL`); without it the endpoint answers extractively and the page shows "Retrieval only". Tests: `python3 -m unittest discover tests` (needs `pip install -r requirements.txt`).
 
 ## Deploy
 
