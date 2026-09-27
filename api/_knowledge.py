@@ -41,10 +41,10 @@ PASSAGES = [
     },
     {
         "id": "exp-ge-vernova",
-        "title": "Agentic AI Production Support Engineer, GE Vernova (Jul 2026 to present)",
+        "title": "Application Developer, GE Vernova (Jul 2026 to present)",
         "section": "Experience",
         "text": (
-            "Harshith's current role, since July 2026, is Agentic AI Production Support Engineer at GE Vernova. "
+            "Harshith's current role, since July 2026, is Application Developer at GE Vernova. "
             "He provides production support for GE Vernova's internal agentic AI platform, a productivity platform "
             "that hosts multiple AI services and APIs running on AWS Bedrock AgentCore."
         ),
