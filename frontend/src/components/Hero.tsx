@@ -18,11 +18,11 @@ export function Hero() {
           </div>
           <div className="hero__companies">
             <span className="hero__companies-label">Previously at</span>
-            <span className="hero__company">Company A</span>
+            <span className="hero__company">Amazon</span>
             <span className="hero__companies-sep">·</span>
-            <span className="hero__company">Company B</span>
+            <span className="hero__company">GE Vernova</span>
             <span className="hero__companies-sep">·</span>
-            <span className="hero__company">Company C</span>
+            <span className="hero__company">Wells Fargo</span>
           </div>
           <p className="hero__tagline">
             Building scalable backend services, modern web UIs, and AI&#8209;driven
