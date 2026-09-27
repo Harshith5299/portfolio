@@ -107,7 +107,7 @@ export function Hero() {
           {
             icon: '🎬',
             title: 'Netflix Clone',
-            status: 'in-dev' as const,
+            status: 'in-dev',
             desc: 'Full-stack streaming platform with user authentication, dynamic content catalogues, and personalised ML recommendations.',
             tags: ['React', 'FastAPI', 'PostgreSQL'],
             href: '#projects',
@@ -115,7 +115,7 @@ export function Hero() {
           {
             icon: '▶️',
             title: 'YouTube Clone',
-            status: 'in-dev' as const,
+            status: 'in-dev',
             desc: 'Video-sharing platform with upload/transcode pipeline, search, subscriptions, and microservices architecture.',
             tags: ['React', 'Kafka', 'FFmpeg'],
             href: '#projects',
@@ -123,7 +123,7 @@ export function Hero() {
           {
             icon: '🛡️',
             title: 'Cybersecurity Dashboard',
-            status: 'in-dev' as const,
+            status: 'in-dev',
             desc: 'AI-driven banking security tool using LangGraph agents to surface contextual risk insights and reduce manual review time.',
             tags: ['LangGraph', 'FastAPI', 'AWS'],
             href: '#projects',
