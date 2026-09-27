@@ -39,3 +39,15 @@ test('asks a question with a solved bot check and shows the cited answer', async
   await page.getByRole('button', { name: 'Show source 1' }).click();
   await expect(page.getByText('At Wells Fargo Harshith built IAM Remediation.')).toBeVisible();
 });
+
+test('says why an answer is retrieval only', async ({ page }) => {
+  await page.route('**/api/ask', route => {
+    if (route.request().method() === 'GET') return route.fulfill({ json: { token: 'test-token', bits: 4 } });
+    return route.fulfill({ json: { ...ANSWER, mode: 'retrieval', reason: 'no_key', model: null } });
+  });
+
+  await page.goto(process.env.BASE_URL ? '/ask' : '/ask.html');
+  await page.getByRole('button', { name: 'How can I contact him?' }).click();
+
+  await expect(page.getByText('Retrieval only (AI key not configured)')).toBeVisible();
+});

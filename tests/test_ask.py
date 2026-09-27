@@ -53,6 +53,15 @@ class RetrievalTests(unittest.TestCase):
         self.assertEqual(_rag.retrieve("What did he do at his first job?")[0]["id"], "exp-earlier")
         self.assertEqual(_rag.retrieve("Where does he work now?")[0]["id"], "exp-ge-vernova")
 
+    def test_word_forms_match(self):
+        # The contact passage says "can be reached"; the question says "reach".
+        for q in ("How to reach him", "What is his email?", "Is he available?"):
+            self.assertEqual(_rag.retrieve(q)[0]["id"], "about-ways-of-working", q)
+        self.assertEqual(_rag.tokenize("reached reaching services opportunities"), ["reach", "reach", "service", "opportunity"])
+
+    def test_stopword_only_question_answers_who_he_is(self):
+        self.assertEqual([p["id"] for p in _rag.retrieve("What does he do?")], list(_rag.GENERAL_IDS))
+
     def test_unknown_topic_returns_nothing(self):
         self.assertEqual(_rag.retrieve("Does he know Rust?"), [])
 

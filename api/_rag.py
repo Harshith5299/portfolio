@@ -37,6 +37,9 @@ STOPWORDS = frozenset(
     "why will with you your about any has had been were than then into over also".split()
 )
 
+# Passages used when a question has no searchable words at all.
+GENERAL_IDS = ("about-summary", "exp-ge-vernova")
+
 # Recruiter phrasing -> vocabulary used in the passages.
 SYNONYMS = {
     "ai": ["llm", "langgraph", "agentic", "rag"],
@@ -54,7 +57,10 @@ SYNONYMS = {
     "now": ["current", "present"],
     "experience": ["years"],
     "contact": ["reach", "linkedin"],
+    "reach": ["contact", "linkedin"],
+    "email": ["contact", "reach"],
     "hire": ["opportunities", "contact"],
+    "available": ["opportunities", "contact"],
     "frontend": ["react", "typescript"],
     "backend": ["fastapi", "python", "microservices"],
     "banking": ["bank", "wells", "fargo", "treasury"],
@@ -71,15 +77,29 @@ SYSTEM_PROMPT = (
 )
 
 
-def tokenize(text: str) -> list[str]:
+def _stem(word: str) -> str:
+    """Strip common suffixes so "reach", "reached" and "reaching" match each other."""
+    if len(word) > 4 and word.endswith("ies"):
+        return word[:-3] + "y"
+    for suffix in ("ing", "ed", "s"):
+        if len(word) - len(suffix) >= 3 and word.endswith(suffix) and not word.endswith("ss"):
+            return word[: -len(suffix)]
+    return word
+
+
+def _words(text: str) -> list[str]:
     return [t for t in re.findall(r"[a-z0-9]+", text.lower()) if t not in STOPWORDS]
 
 
-def _expand(tokens: list[str]) -> list[str]:
-    out = list(tokens)
-    for t in tokens:
-        out.extend(SYNONYMS.get(t, []))
-    return out
+def tokenize(text: str) -> list[str]:
+    return [_stem(t) for t in _words(text)]
+
+
+def _query_terms(question: str) -> list[str]:
+    """Stemmed question words plus synonyms. Synonyms match the word as typed,
+    so "bank" in "Spring Bank" doesn't pull in everything "banking" does."""
+    words = _words(question)
+    return [_stem(t) for t in words] + [_stem(s) for t in words for s in SYNONYMS.get(t, [])]
 
 
 def _doc_tokens(p: dict) -> list[str]:
@@ -101,7 +121,10 @@ def _idf(term: str) -> float:
 
 def retrieve(question: str, k: int = TOP_K) -> list[dict]:
     """Return the top-k passages for the question, each with its BM25 score."""
-    terms = _expand(tokenize(question))
+    terms = _query_terms(question)
+    if not terms:
+        # Only stopwords, e.g. "what does he do?": answer with who he is.
+        return [{**p, "score": 0.0} for p in PASSAGES if p["id"] in GENERAL_IDS]
     scored = []
     for passage, doc in zip(PASSAGES, _DOCS):
         score = 0.0
@@ -134,7 +157,7 @@ def extractive_answer(question: str, passages: list[dict]) -> str:
             "I don't have anything on that in Harshith's portfolio. "
             "Try asking about his experience, AI work, skills or projects, or use the contact form."
         )
-    terms = set(_expand(tokenize(question)))
+    terms = set(_query_terms(question))
     picks = []
     for i, p in enumerate(passages[:2], 1):
         best = max(_sentences(p["text"]), key=lambda x: len(terms & set(tokenize(x))))
