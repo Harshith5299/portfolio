@@ -5,6 +5,7 @@ import './Hero.css';
 
 const ROLES = [
   'Full Stack Developer',
+  'Gen AI Developer',
   'AI/ML Engineer',
   'Data Engineer',
   'Backend Architect',
@@ -118,12 +119,6 @@ export function Hero() {
         </div>
       </div>
 
-      <a href="#about" className="hero__scroll" aria-label="Scroll to about">
-        <div className="hero__scroll-mouse">
-          <div className="hero__scroll-dot" />
-        </div>
-        <span>Scroll Down</span>
-      </a>
     </section>
   );
 }

@@ -121,6 +121,7 @@ button {
   align-items: center;
   gap: 8px;
   padding: 12px 28px;
+  min-height: 44px;
   border-radius: 8px;
   font-size: 0.95rem;
   font-weight: 600;
@@ -165,12 +166,23 @@ button {
   transform: translateY(-2px);
 }
 
+/* Anchor offset so fixed navbar doesn't cover section headings */
+.section {
+  scroll-margin-top: 80px;
+}
+
 @media (max-width: 768px) {
   .section {
     padding: 72px 0;
   }
   .container {
     padding: 0 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .section {
+    padding: 56px 0;
   }
 }
 

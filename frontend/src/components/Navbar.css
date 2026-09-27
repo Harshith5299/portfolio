@@ -83,8 +83,12 @@
 .navbar__hamburger {
   display: none;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   gap: 5px;
   padding: 8px;
+  min-width: 44px;
+  min-height: 44px;
   border-radius: 8px;
   background: none;
   border: none;
@@ -114,6 +118,10 @@
 
 .navbar__overlay {
   display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 998;
 }
 
 @media (max-width: 768px) {
@@ -136,6 +144,7 @@
     transform: translateX(100%);
     transition: transform var(--transition);
     z-index: 999;
+    overflow-y: auto;
   }
 
   .navbar__links--open {
@@ -147,14 +156,13 @@
     width: 100%;
     font-size: 1rem;
     padding: 12px 16px;
+    min-height: 44px;
     margin: 0;
+    display: flex;
+    align-items: center;
   }
 
   .navbar__overlay {
     display: block;
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 998;
   }
 }
