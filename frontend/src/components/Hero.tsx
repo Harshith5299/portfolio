@@ -121,7 +121,7 @@ export function Hero() {
             </div>
             <div className="hero__stat-divider" aria-hidden />
             <div className="hero__stat">
-              <span className="hero__stat-num">Banking</span>
+              <span className="hero__stat-num">AI</span>
               <span className="hero__stat-label">Domain Expert</span>
             </div>
           </div>
