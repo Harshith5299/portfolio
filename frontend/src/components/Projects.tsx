@@ -86,6 +86,13 @@ export function Projects() {
                       </svg>
                       Live Demo
                     </a>
+                  ) : project.previewId ? (
+                    <span className="project-card__wip">
+                      <svg viewBox="0 0 20 20" width="14" height="14" fill="currentColor">
+                        <path fillRule="evenodd" d="M10 3a.75.75 0 01.75.75v6.69l2.97-2.97a.75.75 0 111.06 1.06l-4.25 4.25a.75.75 0 01-1.06 0L5.22 8.53a.75.75 0 011.06-1.06l2.97 2.97V3.75A.75.75 0 0110 3zm-6.25 13.5a.75.75 0 000 1.5h12.5a.75.75 0 000-1.5H3.75z" clipRule="evenodd" />
+                      </svg>
+                      Interactive preview above
+                    </span>
                   ) : (
                     <span className="project-card__wip">
                       <svg viewBox="0 0 20 20" width="14" height="14" fill="currentColor">

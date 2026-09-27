@@ -4,9 +4,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   overflow: hidden;
-  padding: 100px 24px 60px;
+  padding: 80px 24px 60px;
 }
 
 .hero__grid-bg {
@@ -49,19 +49,13 @@
   grid-template-columns: 1fr 1fr;
   gap: 60px;
   align-items: center;
+  margin-top: 24px;
 }
 
 .hero__text {
   display: flex;
   flex-direction: column;
   gap: 20px;
-}
-
-.hero__greeting {
-  font-size: 1.1rem;
-  color: var(--accent);
-  font-weight: 600;
-  letter-spacing: 0.05em;
 }
 
 .hero__name {
@@ -82,24 +76,9 @@
   min-height: 1.8em;
 }
 
-.hero__role-prefix {
-  color: var(--text-2);
-}
-
 .hero__role {
   color: var(--accent-2);
   font-weight: 600;
-}
-
-.hero__cursor {
-  color: var(--accent);
-  font-weight: 300;
-  animation: blink 1s step-end infinite;
-}
-
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
 }
 
 .hero__tagline {
@@ -156,6 +135,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  --photo-size: min(330px, 85vw);
 }
 
 .hero__image-ring {
@@ -166,13 +146,13 @@
 }
 
 .hero__image-ring {
-  width: 320px;
-  height: 320px;
+  width: calc(var(--photo-size) + 40px);
+  height: calc(var(--photo-size) + 40px);
 }
 
 .hero__image-ring--2 {
-  width: 380px;
-  height: 380px;
+  width: calc(var(--photo-size) + 100px);
+  height: calc(var(--photo-size) + 100px);
   border-color: rgba(139, 92, 246, 0.12);
   animation-delay: 0.5s;
 }
@@ -183,8 +163,8 @@
 }
 
 .hero__photo {
-  width: 280px;
-  height: 280px;
+  width: var(--photo-size);
+  height: var(--photo-size);
   border-radius: 50%;
   object-fit: cover;
   object-position: center top;
@@ -267,19 +247,8 @@
     justify-content: center;
   }
 
-  .hero__photo {
-    width: 220px;
-    height: 220px;
-  }
-
-  .hero__image-ring {
-    width: 256px;
-    height: 256px;
-  }
-
-  .hero__image-ring--2 {
-    width: 308px;
-    height: 308px;
+  .hero__image {
+    --photo-size: min(260px, 85vw);
   }
 }
 
@@ -302,5 +271,223 @@
 
   .hero__stat-divider {
     display: none;
+  }
+}
+
+/* Company line */
+.hero__companies {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: var(--text-3);
+  margin-top: -4px;
+}
+
+.hero__companies-label {
+  color: var(--text-3);
+  font-weight: 500;
+}
+
+.hero__company {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  padding: 3px 10px 3px 4px;
+  border-radius: 20px;
+  border: 1px solid;
+  letter-spacing: 0.01em;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.hero__company:hover {
+  transform: translateY(-1px);
+}
+
+.hero__company-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Amazon brand: #FF9900 */
+.hero__company--amazon {
+  color: #FF9900;
+  background: rgba(255, 153, 0, 0.1);
+  border-color: rgba(255, 153, 0, 0.35);
+}
+
+.hero__company--amazon:hover {
+  box-shadow: 0 4px 14px rgba(255, 153, 0, 0.25);
+}
+
+/* GE brand: #0870D8 (Simple Icons official hex) */
+.hero__company--ge {
+  color: #0870D8;
+  background: rgba(8, 112, 216, 0.08);
+  border-color: rgba(8, 112, 216, 0.3);
+}
+
+.hero__company--ge:hover {
+  box-shadow: 0 4px 14px rgba(8, 112, 216, 0.2);
+}
+
+/* Wells Fargo brand: #D71E28 (Simple Icons official hex) */
+.hero__company--wf {
+  color: #D71E28;
+  background: rgba(215, 30, 40, 0.08);
+  border-color: rgba(215, 30, 40, 0.3);
+}
+
+.hero__company--wf:hover {
+  box-shadow: 0 4px 14px rgba(215, 30, 40, 0.2);
+}
+
+.hero__companies-sep {
+  color: var(--border);
+}
+
+/* Featured section header */
+.hero__featured-header {
+  max-width: 1100px;
+  width: 100%;
+  margin-top: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+}
+
+.hero__featured-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+}
+
+.hero__featured-title {
+  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+}
+
+/* Featured project cards */
+.hero__featured {
+  max-width: 1100px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.hero__feat-card {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+
+.hero__feat-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(99, 102, 241, 0.15);
+}
+
+.hero__feat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.hero__feat-icon-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hero__feat-icon {
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
+.hero__feat-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.hero__feat-status {
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 20px;
+  flex-shrink: 0;
+}
+
+.hero__feat-status--live {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+.hero__feat-status--in-dev {
+  background: rgba(99, 102, 241, 0.15);
+  color: var(--accent);
+}
+
+.hero__feat-status--planned {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+}
+
+.hero__feat-desc {
+  font-size: 0.8rem;
+  color: var(--text-3);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.hero__feat-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: auto;
+}
+
+.hero__feat-tag {
+  font-size: 0.68rem;
+  color: var(--text-3);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 6px;
+}
+
+@media (max-width: 900px) {
+  .hero__featured {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero__featured {
+    grid-template-columns: 1fr;
   }
 }
