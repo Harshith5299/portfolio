@@ -29,7 +29,12 @@ frontend/           React SPA (Vite)
       learning.ts   LEARNING_ITEMS array — edit here to add courses/certs
     assets/         profile.jpg
     hooks/          useScrollReveal
+frontend/ask.html   Second Vite page: the /ask RAG demo (src/ask/AskApp.tsx)
 api/                Python Vercel functions
+  ask.py            "Ask My Portfolio" RAG endpoint (POST /api/ask)
+  _rag.py           BM25 retrieval + Claude generation, extractive fallback
+  _pow.py           Proof-of-work bot check required before any model call
+  _knowledge.py     Passages the assistant may answer from; keep in sync with site content
   contact.py        Contact form handler (sends via Resend)
   log.py            Client-side error beacon (hardened, rate-limited)
 docs/               Agent-readable documentation
@@ -95,6 +100,10 @@ Lint and build passing does **not** mean the page works: a CSS bug once left eve
 3. When you add a section or feature, add a test for it in `frontend/e2e/`.
 
 To run the suite against a deployed URL instead of a local build: `BASE_URL=https://… npm run test:e2e`.
+
+## Ask My Portfolio (RAG demo)
+
+`/ask` answers questions from the passages in `api/_knowledge.py` only. When you change Experience, Skills, About or Projects content, update the matching passage there too. Generation uses Claude when either `ANTHROPIC_API_KEY` (direct) or `AI_GATEWAY_API_KEY` (Vercel AI Gateway) is set in Vercel. It uses Claude Haiku 4.5 (`ASK_MODEL` overrides) and caps model calls at `ASK_DAILY_CAP` (200) per day and `ASK_CLIENT_DAILY_CAP` (20) per visitor per day, per warm instance; past a cap it answers extractively for free. Model calls also need an invisible proof-of-work solved by the browser (`api/_pow.py`, `src/ask/pow.ts`); without a key the endpoint answers extractively and the page shows "Retrieval only". Tests: `python3 -m unittest discover tests` (needs `pip install -r requirements.txt`).
 
 ## Deploy
 

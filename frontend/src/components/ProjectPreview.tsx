@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react';
 import './ProjectPreview.css';
 
 const PREVIEW_MAP: Record<string, React.LazyExoticComponent<() => React.ReactElement>> = {
+  'ask-rag': lazy(() => import('./previews/AskRagPreview')),
   'event-syncer': lazy(() => import('./previews/EventSyncerPreview')),
   'spring-bank': lazy(() => import('./previews/SpringBankPreview')),
 };

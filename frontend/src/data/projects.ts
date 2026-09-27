@@ -15,6 +15,19 @@ export interface Project extends CardItem {
 
 export const PROJECTS: Project[] = [
   {
+    title: 'Ask My Portfolio (RAG Assistant)',
+    description:
+      'Retrieval-augmented assistant that answers recruiter questions about my experience and projects. BM25 retrieval over the site\'s content feeds Claude, which answers with inline citations and falls back to extractive answers if the model is unavailable.',
+    tags: ['Python', 'RAG', 'Claude API', 'LLM', 'BM25', 'Vercel Functions', 'React'],
+    status: 'live',
+    gradient: 'linear-gradient(135deg, #6366f1 0%, #0d1f38 100%)',
+    icon: '💬',
+    builtBy: 'agent-assisted',
+    liveUrl: '/ask',
+    repoUrl: 'https://github.com/Harshith5299/portfolio/blob/main/api/_rag.py',
+    previewId: 'ask-rag',
+  },
+  {
     title: 'Event Syncer',
     description:
       'Python FastAPI + React service that reconciles CRM and calendar data — normalises records from two sources, scores cross-source matches, surfaces conflicts, and flags data-quality issues with a filterable React dashboard.',
