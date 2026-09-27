@@ -65,3 +65,25 @@ test('same-origin files linked from the page exist', async ({ page, request }) =
   }
   expect(missing, 'linked files that do not exist').toEqual([]);
 });
+
+test('hero features the top three project cards, with the live RAG demo first and above the fold', async ({ page }, testInfo) => {
+  await page.goto('/');
+  const cards = page.locator('#hero .project-card');
+  await expect(cards).toHaveCount(3);
+  const titles = await cards.locator('.project-card__title').allTextContents();
+  const projectTitles = await page.locator('#projects .project-card__title').allTextContents();
+  expect(titles).toEqual(projectTitles.slice(0, 3));
+  expect(titles[0]).toMatch(/Ask My Portfolio/);
+
+  const first = cards.first();
+  await expect(first.locator('.project-card__preview > *').first()).toBeVisible();
+  await expect(first.locator('.project-card__preview-link')).toHaveAttribute('href', '/ask');
+  await expect(first.getByRole('link', { name: 'Live Demo', exact: true })).toHaveAttribute('href', '/ask');
+
+  // On desktop the RAG preview must be clickable without scrolling.
+  if (testInfo.project.name === 'desktop') {
+    const box = await first.locator('.project-card__preview').boundingBox();
+    const viewport = page.viewportSize()!;
+    expect(box!.y + box!.height, 'RAG preview bottom edge').toBeLessThanOrEqual(viewport.height);
+  }
+});

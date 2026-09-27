@@ -14,9 +14,9 @@ const ANSWER = {
 test('project card links to the live /ask demo', async ({ page }) => {
   await page.goto('/');
   await scrollToSection(page, 'projects');
-  const card = page.locator('.project-card', { hasText: 'Ask My Portfolio' });
+  const card = page.locator('#projects .project-card', { hasText: 'Ask My Portfolio' });
   await expect(card).toBeVisible();
-  await expect(card.getByRole('link', { name: 'Live Demo' })).toHaveAttribute('href', '/ask');
+  await expect(card.getByRole('link', { name: 'Live Demo', exact: true })).toHaveAttribute('href', '/ask');
 });
 
 test('asks a question with a solved bot check and shows the cited answer', async ({ page }) => {
