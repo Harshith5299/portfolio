@@ -1,6 +1,6 @@
 import { useScrollReveal } from '../hooks/useScrollReveal';
 import { PROJECTS, BUILT_BY_LABEL, BUILT_BY_TITLE, BUILT_BY_ICON } from '../data/projects';
-import type { ProjectStatus } from '../data/projects';
+import type { Project, ProjectStatus } from '../data/projects';
 import { GitHubIcon } from './Icons';
 import { ProjectPreview } from './ProjectPreview';
 import './Projects.css';
@@ -10,6 +10,27 @@ const STATUS_LABELS: Record<ProjectStatus, string> = {
   'in-dev': 'In Development',
   'coming-soon': 'Coming Soon',
 };
+
+function CardBadges({ project }: { project: Project }) {
+  return (
+    <div className="project-card__banner-badges">
+      <span className={`project-card__badge project-card__badge--${project.status}`}>
+        {project.status === 'live' && (
+          <span className="project-card__badge-dot" aria-hidden />
+        )}
+        {STATUS_LABELS[project.status]}
+      </span>
+      {project.builtBy && (
+        <span
+          className={`built-by-badge built-by-badge--${project.builtBy}`}
+          title={BUILT_BY_TITLE[project.builtBy]}
+        >
+          {BUILT_BY_ICON[project.builtBy]} {BUILT_BY_LABEL[project.builtBy]}
+        </span>
+      )}
+    </div>
+  );
+}
 
 export function Projects() {
   const ref = useScrollReveal<HTMLElement>();
@@ -37,42 +58,12 @@ export function Projects() {
               {project.previewId ? (
                 <div className="project-card__preview">
                   <ProjectPreview id={project.previewId} />
-                  <div className="project-card__banner-badges">
-                    <span className={`project-card__badge project-card__badge--${project.status}`}>
-                      {project.status === 'live' && (
-                        <span className="project-card__badge-dot" aria-hidden />
-                      )}
-                      {STATUS_LABELS[project.status]}
-                    </span>
-                    {project.builtBy && (
-                      <span
-                        className={`built-by-badge built-by-badge--${project.builtBy}`}
-                        title={BUILT_BY_TITLE[project.builtBy]}
-                      >
-                        {BUILT_BY_ICON[project.builtBy]} {BUILT_BY_LABEL[project.builtBy]}
-                      </span>
-                    )}
-                  </div>
+                  <CardBadges project={project} />
                 </div>
               ) : (
                 <div className="project-card__banner" style={{ background: project.gradient }}>
                   <span className="project-card__icon">{project.icon}</span>
-                  <div className="project-card__banner-badges">
-                    <span className={`project-card__badge project-card__badge--${project.status}`}>
-                      {project.status === 'live' && (
-                        <span className="project-card__badge-dot" aria-hidden />
-                      )}
-                      {STATUS_LABELS[project.status]}
-                    </span>
-                    {project.builtBy && (
-                      <span
-                        className={`built-by-badge built-by-badge--${project.builtBy}`}
-                        title={BUILT_BY_TITLE[project.builtBy]}
-                      >
-                        {BUILT_BY_ICON[project.builtBy]} {BUILT_BY_LABEL[project.builtBy]}
-                      </span>
-                    )}
-                  </div>
+                  <CardBadges project={project} />
                 </div>
               )}
 
