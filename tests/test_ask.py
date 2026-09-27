@@ -1,4 +1,5 @@
 """Tests for the Ask My Portfolio RAG endpoint. Run: python3 -m unittest discover tests"""
+import hashlib
 import json
 import os
 import secrets
@@ -9,6 +10,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.request import Request, urlopen
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "api"))
+import _pow  # noqa: E402
 import _rag  # noqa: E402
 from ask import handler as AskHandler  # noqa: E402
 
@@ -118,6 +120,31 @@ class GenerationTests(unittest.TestCase):
         self.assertTrue(result["sources"])
 
 
+def solve(challenge: dict) -> dict:
+    counter = 0
+    while True:
+        digest = hashlib.sha256(f"{challenge['token']}:{counter}".encode()).digest()
+        if _pow._leading_zero_bits(digest) >= challenge["bits"]:
+            return {"token": challenge["token"], "counter": counter}
+        counter += 1
+
+
+class ProofOfWorkTests(unittest.TestCase):
+    def test_solved_challenge_verifies_once(self):
+        proof = solve(_pow.issue("1.2.3.4"))
+        self.assertTrue(_pow.verify(proof, "1.2.3.4"))
+        self.assertFalse(_pow.verify(proof, "1.2.3.4"), "tokens are single-use")
+
+    def test_rejects_wrong_client_bad_counter_and_forgery(self):
+        challenge = _pow.issue("1.2.3.4")
+        proof = solve(challenge)
+        self.assertFalse(_pow.verify(proof, "5.6.7.8"))
+        self.assertFalse(_pow.verify({"token": challenge["token"], "counter": "x"}, "1.2.3.4"))
+        forged = proof["token"].rsplit(".", 1)[0] + ".deadbeef"
+        self.assertFalse(_pow.verify({"token": forged, "counter": proof["counter"]}, "1.2.3.4"))
+        self.assertFalse(_pow.verify(None, "1.2.3.4"))
+
+
 class EndpointTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -140,6 +167,22 @@ class EndpointTests(unittest.TestCase):
         status, body = self.post(json.dumps({"question": "Tell me about Spring Bank"}).encode(), "10.0.0.1")
         self.assertEqual(status, 200)
         self.assertEqual(body["sources"][0]["id"], "proj-spring-bank")
+
+    def test_unverified_request_never_calls_model(self):
+        fake = serve(FakeClaude)
+        os.environ.update(ANTHROPIC_API_KEY=FAKE_KEY, ANTHROPIC_BASE_URL=f"http://127.0.0.1:{fake.server_port}")
+        try:
+            _, no_proof = self.post(b'{"question": "What AI experience does he have?"}', "10.0.0.4")
+            with urlopen(Request(self.url, headers={"X-Forwarded-For": "10.0.0.4"})) as resp:
+                challenge = json.loads(resp.read())
+            body = json.dumps({"question": "What AI experience does he have?", "proof": solve(challenge)}).encode()
+            _, with_proof = self.post(body, "10.0.0.4")
+        finally:
+            os.environ.pop("ANTHROPIC_API_KEY")
+            os.environ.pop("ANTHROPIC_BASE_URL")
+            fake.shutdown()
+        self.assertEqual(no_proof["mode"], "retrieval")
+        self.assertEqual(with_proof["mode"], "generated")
 
     def test_rejects_empty_question(self):
         status, _ = self.post(b'{"question": "  "}', "10.0.0.2")

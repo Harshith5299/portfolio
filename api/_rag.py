@@ -199,14 +199,14 @@ def generate(question: str, passages: list[dict], backend: str) -> tuple[str, st
     return text, response.model
 
 
-def answer(question: str, log=None, client_id: str = "") -> dict:
+def answer(question: str, log=None, client_id: str = "", allow_model: bool = True) -> dict:
     t0 = time.perf_counter()
     passages = retrieve(question)
     retrieve_ms = round((time.perf_counter() - t0) * 1000, 1)
 
     mode, model, text = "retrieval", None, None
     backend = _backend()
-    if passages and backend and _within_budget(client_id):
+    if passages and backend and allow_model and _within_budget(client_id):
         try:
             text, model = generate(question, passages, backend)
             mode = "generated"

@@ -33,6 +33,7 @@ frontend/ask.html   Second Vite page: the /ask RAG demo (src/ask/AskApp.tsx)
 api/                Python Vercel functions
   ask.py            "Ask My Portfolio" RAG endpoint (POST /api/ask)
   _rag.py           BM25 retrieval + Claude generation, extractive fallback
+  _pow.py           Proof-of-work bot check required before any model call
   _knowledge.py     Passages the assistant may answer from; keep in sync with site content
   contact.py        Contact form handler
   log.py            Client-side error beacon (hardened, rate-limited)
@@ -92,7 +93,7 @@ This distinction is intentional and important: the `builtBy: 'solo'` label on a 
 
 ## Ask My Portfolio (RAG demo)
 
-`/ask` answers questions from the passages in `api/_knowledge.py` only. When you change Experience, Skills, About or Projects content, update the matching passage there too. Generation uses Claude when either `ANTHROPIC_API_KEY` (direct) or `AI_GATEWAY_API_KEY` (Vercel AI Gateway) is set in Vercel. It uses Claude Haiku 4.5 (`ASK_MODEL` overrides) and caps model calls at `ASK_DAILY_CAP` (200) per day and `ASK_CLIENT_DAILY_CAP` (20) per visitor per day, per warm instance; past a cap it answers extractively for free; without it the endpoint answers extractively and the page shows "Retrieval only". Tests: `python3 -m unittest discover tests` (needs `pip install -r requirements.txt`).
+`/ask` answers questions from the passages in `api/_knowledge.py` only. When you change Experience, Skills, About or Projects content, update the matching passage there too. Generation uses Claude when either `ANTHROPIC_API_KEY` (direct) or `AI_GATEWAY_API_KEY` (Vercel AI Gateway) is set in Vercel. It uses Claude Haiku 4.5 (`ASK_MODEL` overrides) and caps model calls at `ASK_DAILY_CAP` (200) per day and `ASK_CLIENT_DAILY_CAP` (20) per visitor per day, per warm instance; past a cap it answers extractively for free. Model calls also need an invisible proof-of-work solved by the browser (`api/_pow.py`, `src/ask/pow.ts`); without a key the endpoint answers extractively and the page shows "Retrieval only". Tests: `python3 -m unittest discover tests` (needs `pip install -r requirements.txt`).
 
 ## Deploy
 

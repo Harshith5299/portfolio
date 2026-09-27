@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { GitHubIcon } from '../components/Icons';
+import { solveChallenge, type Proof } from './pow';
 import './AskApp.css';
 
 interface Source {
@@ -39,7 +40,8 @@ const PIPELINE = [
   { label: 'Retrieve', desc: 'BM25 ranks 16 passages written from this site: experience, skills, projects.' },
   { label: 'Ground', desc: 'The top 4 passages are numbered and passed to the model as the only allowed context.' },
   { label: 'Generate', desc: 'Claude answers in 2 to 4 sentences with [n] citations, or says it does not know.' },
-  { label: 'Fallback', desc: 'If the model is unavailable, the best-matching sentences are returned extractively.' },
+  { label: 'Protect', desc: 'An invisible proof-of-work check and daily caps keep bots from running up model costs.' },
+  { label: 'Fallback', desc: 'If the model is unavailable or a check fails, the best-matching sentences are returned extractively.' },
 ];
 
 /** Render "[1]" markers in an answer as citation chips that highlight the matching source. */
@@ -103,6 +105,12 @@ export function AskApp() {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
+  // Bot check solved in the background, so it's ready before the visitor asks.
+  const proofRef = useRef<Promise<Proof | null> | null>(null);
+
+  useEffect(() => {
+    proofRef.current = solveChallenge();
+  }, []);
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
@@ -115,10 +123,12 @@ export function AskApp() {
     setTurns(t => [...t, { role: 'user', text: q }]);
     setLoading(true);
     try {
+      const proof = await (proofRef.current ?? solveChallenge());
+      proofRef.current = solveChallenge(); // each proof is single-use; start the next one
       const res = await fetch('/api/ask', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question: q }),
+        body: JSON.stringify({ question: q, proof }),
       });
       const body = await res.json().catch(() => null);
       if (!res.ok || !body) throw new Error(body?.error ?? 'The assistant is unavailable right now.');
