@@ -58,7 +58,7 @@
 }
 
 .hero__name {
-  font-size: clamp(2.4rem, 5vw, 4rem);
+  font-size: clamp(3rem, 5.5vw, 5.5rem);
   font-weight: 800;
   line-height: 1.1;
   letter-spacing: -0.02em;
@@ -69,7 +69,7 @@
 }
 
 .hero__role-line {
-  font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+  font-size: clamp(1.4rem, 2.8vw, 1.9rem);
   color: var(--text-2);
   font-weight: 400;
   min-height: 1.8em;
@@ -81,7 +81,7 @@
 }
 
 .hero__tagline {
-  font-size: 1rem;
+  font-size: 1.15rem;
   color: var(--text-2);
   line-height: 1.7;
   max-width: 480px;
