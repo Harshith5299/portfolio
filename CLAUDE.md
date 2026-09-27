@@ -9,7 +9,7 @@ Personal portfolio site for Harshith Chittajallu. Audience: software engineering
 | Frontend | React 19, TypeScript, Vite, plain CSS |
 | Backend | Python Vercel Serverless Functions (`api/`) |
 | Deploy | Vercel (GitHub → auto-deploy on push to `main`) |
-| CI | GitHub Actions: `ci.yml` (lint + build), `deploy-prod.yml`, `trivy.yml`; SonarCloud Automatic Analysis (config in `.sonarcloud.properties`) |
+| CI | GitHub Actions: `ci.yml` (lint + build + Playwright E2E), `deploy-prod.yml`, `trivy.yml`; SonarCloud Automatic Analysis (config in `.sonarcloud.properties`) |
 | Analytics | Vercel Web Analytics + custom `/api/log` beacon |
 
 ## Repo layout
@@ -91,6 +91,16 @@ Shows on project and learning cards. Honest labelling helps recruiters see what'
 
 This distinction is intentional and important: the `builtBy: 'solo'` label on a learning item is a signal to all agents that they should step back from writing code there.
 
+## Verifying UI changes (required)
+
+Lint and build passing does **not** mean the page works: a CSS bug once left every section below the hero invisible while all checks were green. Before calling any UI change done:
+
+1. Run `npm run test:e2e` (Playwright, `frontend/e2e/`). It checks every section is actually visible after scrolling, nav links, the contact form (mocked API), images, links, mobile overflow and SEO tags, and fails on any browser console error. Each test prints its browser logs.
+2. Open the PR's Vercel preview (link in the `vercel[bot]` comment) and screenshot it at desktop and mobile widths. Look at the screenshots.
+3. When you add a section or feature, add a test for it in `frontend/e2e/`.
+
+To run the suite against a deployed URL instead of a local build: `BASE_URL=https://… npm run test:e2e`.
+
 ## Ask My Portfolio (RAG demo)
 
 `/ask` answers questions from the passages in `api/_knowledge.py` only. When you change Experience, Skills, About or Projects content, update the matching passage there too. Generation uses Claude when either `ANTHROPIC_API_KEY` (direct) or `AI_GATEWAY_API_KEY` (Vercel AI Gateway) is set in Vercel. It uses Claude Haiku 4.5 (`ASK_MODEL` overrides) and caps model calls at `ASK_DAILY_CAP` (200) per day and `ASK_CLIENT_DAILY_CAP` (20) per visitor per day, per warm instance; past a cap it answers extractively for free. Model calls also need an invisible proof-of-work solved by the browser (`api/_pow.py`, `src/ask/pow.ts`); without a key the endpoint answers extractively and the page shows "Retrieval only". Tests: `python3 -m unittest discover tests` (needs `pip install -r requirements.txt`).
@@ -101,7 +111,7 @@ Push to `main` → `deploy-prod.yml` triggers automatically (installs `uv` for P
 
 ## Missing assets (action needed by Buddy)
 
-1. `frontend/public/resume.pdf` — add your CV here; the Resume button in the Hero links to `/resume.pdf`.
+1. `frontend/public/resume.pdf` — add your CV here. The Hero's Resume button is hidden until this file exists (`__HAS_RESUME__` in `vite.config.ts`) and appears automatically once it is committed.
 2. `frontend/public/og-image.png` — 1200×630 px image for OG/Twitter previews; referenced in `index.html`.
 3. LinkedIn URL is `linkedin.com/in/harshith-ch` — confirmed correct.
 4. Enable Vercel Analytics in the Vercel dashboard (Project → Analytics → Enable).
@@ -114,4 +124,5 @@ npm ci          # install
 npm run dev     # dev server (http://localhost:5173)
 npm run build   # production build → dist/
 npm run lint    # ESLint
+npm run test:e2e  # Playwright E2E (first time: npx playwright install chromium)
 ```

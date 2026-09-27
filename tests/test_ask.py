@@ -50,7 +50,8 @@ def serve(handler_cls):
 class RetrievalTests(unittest.TestCase):
     def test_ranks_relevant_passage_first(self):
         self.assertEqual(_rag.retrieve("What AI and agent experience does he have?")[0]["id"], "skills-ai")
-        self.assertEqual(_rag.retrieve("What did he do at his first job?")[0]["id"], "exp-junior")
+        self.assertEqual(_rag.retrieve("What did he do at his first job?")[0]["id"], "exp-earlier")
+        self.assertEqual(_rag.retrieve("Where does he work now?")[0]["id"], "exp-ge-vernova")
 
     def test_unknown_topic_returns_nothing(self):
         self.assertEqual(_rag.retrieve("Does he know Rust?"), [])

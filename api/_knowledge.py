@@ -12,7 +12,7 @@ PASSAGES = [
         "title": "Who Harshith is",
         "section": "About",
         "text": (
-            "Harshith Chittajallu is a Full Stack and Gen AI Developer with 5+ years in software engineering. "
+            "Harshith Chittajallu is a Full Stack and Gen AI Developer with 8+ years in software engineering. "
             "He pivoted into Python, data engineering and AI-driven applications mid-career, and builds scalable "
             "backend services, modern web UIs and data pipelines that help teams make faster, safer decisions, "
             "especially in banking and enterprise environments."
@@ -40,47 +40,60 @@ PASSAGES = [
         ),
     },
     {
-        "id": "exp-senior",
-        "title": "Senior Software Engineer, Financial Services Firm (2022 to present)",
+        "id": "exp-ge-vernova",
+        "title": "Agentic AI Production Support Engineer, GE Vernova (Jul 2026 to present)",
         "section": "Experience",
         "text": (
-            "As Senior Software Engineer at a financial services firm (2022 to present, cybersecurity and banking), "
-            "Harshith built AI-driven decisioning tools using LangGraph and ADK, reducing manual security review "
-            "workload by 60%. He designed LLM-assisted summarisation pipelines for cybersecurity alerts in a "
-            "high-governance banking environment."
+            "Harshith's current role, since July 2026, is Agentic AI Production Support Engineer at GE Vernova. "
+            "He provides production support for GE Vernova's internal agentic AI platform, a productivity platform "
+            "that hosts multiple AI services and APIs running on AWS Bedrock AgentCore."
         ),
     },
     {
-        "id": "exp-senior-platform",
-        "title": "Senior Software Engineer: platform and delivery",
+        "id": "exp-wells-fargo",
+        "title": "Full Stack Python AI Developer, Wells Fargo (Jan 2025 to Jun 2026)",
         "section": "Experience",
         "text": (
-            "In the same senior role he architected FastAPI microservices with async processing, PostgreSQL and "
-            "AWS Lambda for real-time risk workflows, led cross-functional collaboration between product, security "
-            "and data stakeholders to ship audit-ready features, and established CI/CD with GitHub Actions and "
-            "CloudWatch monitoring. Stack: Python, FastAPI, LangGraph, ADK, AWS, PostgreSQL, Docker."
+            "At Wells Fargo (January 2025 to June 2026, cybersecurity and identity and access governance) Harshith built "
+            "IAM Remediation, an internal platform that helps managers review and revoke large volumes of user "
+            "entitlements, reducing blanket approvals and improving audit readiness. He implemented LangGraph multi-step "
+            "agents that generate natural-language entitlement summaries and recommend revocation actions, with FastAPI "
+            "microservices and a React UI built on Google's Agent Development Kit (ADK)."
         ),
     },
     {
-        "id": "exp-swe",
-        "title": "Software Engineer, Enterprise Technology Solutions (2019 to 2022)",
+        "id": "exp-wells-fargo-platform",
+        "title": "Wells Fargo: data, risk analytics and delivery",
         "section": "Experience",
         "text": (
-            "As Software Engineer (2019 to 2022, enterprise systems and data engineering) Harshith developed Java and "
-            "Spring Boot microservices for high-throughput transaction processing, led a phased migration of legacy "
-            "data workflows to Python ETL pipelines on PySpark and AWS Glue, built Kafka event streaming for real-time "
-            "ingestion, and delivered SQL optimisations that cut query latency by 40%. He also introduced Docker and "
-            "Jenkins CI pipelines for the team."
+            "Also at Wells Fargo, Harshith built Python scenario models and data pipelines for stress testing and what-if "
+            "analysis on a Treasury and Risk analytics platform, stored entitlement data in MongoDB and PostgreSQL, and "
+            "shipped services with Docker, HashiCorp Nomad, GitHub Actions and Jenkins, tested with Pytest and React "
+            "Testing Library."
         ),
     },
     {
-        "id": "exp-junior",
-        "title": "Junior Software Developer, Software Consultancy (2017 to 2019)",
+        "id": "exp-amazon",
+        "title": "Full Stack Developer, Amazon (May 2022 to Dec 2024)",
         "section": "Experience",
         "text": (
-            "As Junior Software Developer (2017 to 2019, full stack) Harshith built REST APIs with Java and Spring Boot "
-            "for client-facing enterprise portals, developed React and TypeScript frontend features for internal "
-            "dashboards, and worked in an Agile team with sprint planning, code reviews and retrospectives."
+            "At Amazon (May 2022 to December 2024, Amazon Photos, AI and fraud detection) Harshith developed FastAPI "
+            "microservices on AWS Lambda and API Gateway, replaced Java backend logic with async Python services, "
+            "integrated Amazon Rekognition and Hugging Face Transformers for image tagging and semantic photo search, "
+            "rebuilt transaction validation as a Python fraud-detection pipeline on Kafka streams, and built "
+            "LangChain and LangGraph document-classification workflows."
+        ),
+    },
+    {
+        "id": "exp-earlier",
+        "title": "Earlier roles (2017 to 2022)",
+        "section": "Experience",
+        "text": (
+            "Before Amazon, Harshith was a Full Stack Developer at Principal Healthcare (2022, FastAPI, React, GCP and GKE), "
+            "a Python Full Stack Developer at Tango Analytics (2021, Flask, FastAPI, React, Kubernetes), a Python Backend "
+            "Developer at AT&T (2020 to 2021, Flask and FastAPI APIs for a portfolio management platform), a Jr. Software "
+            "Developer at L&T Infotech (2018 to 2019, Flask, Django, AWS S3, Jenkins, Terraform) and started his career "
+            "as an Assistant Developer at Value Labs (2017 to 2018, Java, MySQL, JavaScript)."
         ),
     },
     {

@@ -4,13 +4,13 @@ import './AskRagPreview.css';
 const QA = [
   {
     q: 'Agentic AI experience?',
-    sources: [['AI & agentic skills', 100], ['Senior SWE, banking', 62], ['In-dev projects', 48]] as const,
-    a: 'LangGraph + ADK tools, 60% less manual review',
+    sources: [['AI & agentic skills', 100], ['Wells Fargo, IAM agents', 64], ['GE Vernova, AgentCore', 51]] as const,
+    a: 'LangGraph agents for access reviews at Wells Fargo',
   },
   {
     q: 'Worked in banking?',
-    sources: [['Senior SWE, banking', 100], ['Spring Bank', 74], ['Current focus', 45]] as const,
-    a: 'Yes, cybersecurity tooling at a bank since 2022',
+    sources: [['Wells Fargo, risk', 100], ['Spring Bank', 73], ['Wells Fargo, IAM', 63]] as const,
+    a: 'Yes, Wells Fargo from 2025 to 2026',
   },
 ];
 

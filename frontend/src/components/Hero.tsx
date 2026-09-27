@@ -17,17 +17,7 @@ export function Hero() {
             <span className="hero__role">Full Stack &amp; Gen AI Developer</span>
           </div>
           <div className="hero__companies">
-            <span className="hero__companies-label">Previously at</span>
-            <span className="hero__company hero__company--amazon">
-              {/* Amazon smile-arrow — hand-drawn from brand geometry; not in Simple Icons (trademark removed) */}
-              <span className="hero__company-icon" aria-hidden>
-                <svg viewBox="0 0 28 10" fill="currentColor" width="28" height="10">
-                  <path d="M1 7 Q14 2 25 7 L27 5.5 L25 9 Q14 4.5 3 9 Z"/>
-                </svg>
-              </span>
-              Amazon
-            </span>
-            <span className="hero__companies-sep">·</span>
+            <span className="hero__companies-label">Experience at</span>
             <span className="hero__company hero__company--ge">
               {/* General Electric — Simple Icons siGeneralelectric (MIT) */}
               <span className="hero__company-icon" aria-hidden>
@@ -47,6 +37,16 @@ export function Hero() {
               </span>
               Wells Fargo
             </span>
+            <span className="hero__companies-sep">·</span>
+            <span className="hero__company hero__company--amazon">
+              {/* Amazon smile-arrow — hand-drawn from brand geometry; not in Simple Icons (trademark removed) */}
+              <span className="hero__company-icon" aria-hidden>
+                <svg viewBox="0 0 28 10" fill="currentColor" width="28" height="10">
+                  <path d="M1 7 Q14 2 25 7 L27 5.5 L25 9 Q14 4.5 3 9 Z"/>
+                </svg>
+              </span>
+              Amazon
+            </span>
           </div>
           <p className="hero__tagline">
             Building scalable backend services, modern web UIs, and AI&#8209;driven
@@ -60,12 +60,14 @@ export function Hero() {
               </svg>
             </a>
             <a href="#contact" className="btn btn-secondary">Get In Touch</a>
-            <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className="btn btn-ghost">
-              <svg viewBox="0 0 20 20" width="16" height="16" fill="currentColor">
-                <path fillRule="evenodd" d="M10 3a.75.75 0 01.75.75v7.44l2.97-2.97a.75.75 0 111.06 1.06l-4.25 4.25a.75.75 0 01-1.06 0L5.22 9.28a.75.75 0 111.06-1.06l2.97 2.97V3.75A.75.75 0 0110 3zm-6.25 13.5a.75.75 0 000 1.5h12.5a.75.75 0 000-1.5H3.75z" clipRule="evenodd" />
-              </svg>
-              Resume
-            </a>
+            {__HAS_RESUME__ && (
+              <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className="btn btn-ghost">
+                <svg viewBox="0 0 20 20" width="16" height="16" fill="currentColor">
+                  <path fillRule="evenodd" d="M10 3a.75.75 0 01.75.75v7.44l2.97-2.97a.75.75 0 111.06 1.06l-4.25 4.25a.75.75 0 01-1.06 0L5.22 9.28a.75.75 0 111.06-1.06l2.97 2.97V3.75A.75.75 0 0110 3zm-6.25 13.5a.75.75 0 000 1.5h12.5a.75.75 0 000-1.5H3.75z" clipRule="evenodd" />
+                </svg>
+                Resume
+              </a>
+            )}
             <a
               href="https://github.com/Harshith5299"
               target="_blank"
@@ -111,7 +113,7 @@ export function Hero() {
 
           <div className="hero__stats">
             <div className="hero__stat">
-              <span className="hero__stat-num">5+</span>
+              <span className="hero__stat-num">8+</span>
               <span className="hero__stat-label">Years Experience</span>
             </div>
             <div className="hero__stat-divider" aria-hidden />

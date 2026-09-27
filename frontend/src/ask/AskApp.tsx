@@ -39,7 +39,7 @@ const MAX_QUESTION = 300;
 const SOURCE_URL = 'https://github.com/Harshith5299/portfolio/blob/main/api/_rag.py';
 
 const PIPELINE = [
-  { label: 'Retrieve', desc: 'BM25 ranks 16 passages written from this site: experience, skills, projects.' },
+  { label: 'Retrieve', desc: 'BM25 ranks short passages written from this site: experience, skills, projects.' },
   { label: 'Ground', desc: 'The top 4 passages are numbered and passed to the model as the only allowed context.' },
   { label: 'Generate', desc: 'Claude answers in 2 to 4 sentences with [n] citations, or says it does not know.' },
   { label: 'Protect', desc: 'An invisible proof-of-work check and daily caps keep bots from running up model costs.' },
