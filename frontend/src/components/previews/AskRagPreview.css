@@ -87,7 +87,7 @@
 .arp__a {
   padding: 5px 8px;
   border-radius: 6px;
-  background: rgba(52, 211, 153, 0.08);
+  background: #0c2a26;
   border: 1px solid rgba(52, 211, 153, 0.25);
   color: #d1fae5;
   white-space: nowrap;
@@ -110,6 +110,6 @@
   border-radius: 3px;
   font-size: 0.6rem;
   font-weight: 700;
-  color: #a5b4fc;
-  background: rgba(99, 102, 241, 0.2);
+  color: #e0e7ff;
+  background: #312e81;
 }

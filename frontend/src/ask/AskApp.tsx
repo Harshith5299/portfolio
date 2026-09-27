@@ -22,10 +22,11 @@ interface AskResponse {
   timings: { retrieve_ms: number; total_ms: number };
 }
 
-type Turn =
+type Turn = { id: number } & (
   | { role: 'user'; text: string }
   | { role: 'assistant'; data: AskResponse }
-  | { role: 'error'; text: string };
+  | { role: 'error'; text: string }
+);
 
 const SUGGESTIONS = [
   'What AI and agentic work has he done?',
@@ -47,16 +48,21 @@ const PIPELINE = [
 ];
 
 /** Render "[1]" markers in an answer as citation chips that highlight the matching source. */
-function AnswerText({ text, onCite }: { text: string; onCite: (n: number) => void }) {
-  const parts = text.split(/(\[\d+\])/g);
+function AnswerText({ text, onCite }: Readonly<{ text: string; onCite: (n: number) => void }>) {
+  // Key each part by its character offset in the answer, which is stable and unique.
+  const parts: { part: string; at: number }[] = [];
+  for (const part of text.split(/(\[\d+\])/g)) {
+    const prev = parts.at(-1);
+    parts.push({ part, at: prev ? prev.at + prev.part.length : 0 });
+  }
   return (
     <p className="ask__answer">
-      {parts.map((part, i) => {
+      {parts.map(({ part, at }) => {
         const m = /^\[(\d+)\]$/.exec(part);
-        if (!m) return <span key={i}>{part}</span>;
+        if (!m) return <span key={at}>{part}</span>;
         const n = Number(m[1]);
         return (
-          <button key={i} type="button" className="ask__cite" onClick={() => onCite(n)} aria-label={`Show source ${n}`}>
+          <button key={at} type="button" className="ask__cite" onClick={() => onCite(n)} aria-label={`Show source ${n}`}>
             {n}
           </button>
         );
@@ -65,7 +71,7 @@ function AnswerText({ text, onCite }: { text: string; onCite: (n: number) => voi
   );
 }
 
-function AssistantTurn({ data }: { data: AskResponse }) {
+function AssistantTurn({ data }: Readonly<{ data: AskResponse }>) {
   const [active, setActive] = useState<number | null>(null);
   const maxScore = Math.max(...data.sources.map(s => s.score), 1);
 
@@ -102,8 +108,15 @@ function AssistantTurn({ data }: { data: AskResponse }) {
   );
 }
 
+function TurnView({ turn }: Readonly<{ turn: Turn }>) {
+  if (turn.role === 'assistant') return <AssistantTurn data={turn.data} />;
+  const variant = turn.role === 'user' ? 'user' : 'error';
+  return <div className={`ask__bubble ask__bubble--${variant}`}>{turn.text}</div>;
+}
+
 export function AskApp() {
   const [turns, setTurns] = useState<Turn[]>([]);
+  const nextId = useRef(0);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
@@ -122,7 +135,7 @@ export function AskApp() {
     const q = question.trim();
     if (!q || loading) return;
     setInput('');
-    setTurns(t => [...t, { role: 'user', text: q }]);
+    setTurns(t => [...t, { id: nextId.current++, role: 'user', text: q }]);
     setLoading(true);
     try {
       const proof = await (proofRef.current ?? solveChallenge());
@@ -136,11 +149,11 @@ export function AskApp() {
       if (!res.ok || !body) throw new Error(body?.error ?? 'The assistant is unavailable right now.');
       const data = body as AskResponse;
       track('Ask Answered', { mode: data.mode, reason: data.reason, botCheck: proof ? 'solved' : 'unsolved' });
-      setTurns(t => [...t, { role: 'assistant', data }]);
+      setTurns(t => [...t, { id: nextId.current++, role: 'assistant', data }]);
     } catch (err) {
       const text = err instanceof Error ? err.message : 'Something went wrong.';
       track('Ask Failed', { error: text.slice(0, 100) });
-      setTurns(t => [...t, { role: 'error', text }]);
+      setTurns(t => [...t, { id: nextId.current++, role: 'error', text }]);
     } finally {
       setLoading(false);
     }
@@ -177,15 +190,9 @@ export function AskApp() {
                 ))}
               </div>
             )}
-            {turns.map((turn, i) =>
-              turn.role === 'user' ? (
-                <div key={i} className="ask__bubble ask__bubble--user">{turn.text}</div>
-              ) : turn.role === 'assistant' ? (
-                <AssistantTurn key={i} data={turn.data} />
-              ) : (
-                <div key={i} className="ask__bubble ask__bubble--error">{turn.text}</div>
-              ),
-            )}
+            {turns.map(turn => (
+              <TurnView key={turn.id} turn={turn} />
+            ))}
             {loading && (
               <div className="ask__bubble ask__bubble--bot ask__thinking" aria-label="Thinking">
                 <span />

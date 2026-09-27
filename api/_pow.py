@@ -65,8 +65,7 @@ def verify(proof, client_id: str) -> bool:
     digest = hashlib.sha256(f"{token}:{counter}".encode()).digest()
     if _leading_zero_bits(digest) < POW_BITS:
         return False
-    for t, expiry in list(_used.items()):
-        if expiry < now:
-            del _used[t]
+    for t in [t for t, expiry in _used.items() if expiry < now]:
+        del _used[t]
     _used[token] = now + TOKEN_TTL
     return True

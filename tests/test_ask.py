@@ -12,7 +12,7 @@ from urllib.request import Request, urlopen
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "api"))
 import _pow  # noqa: E402
 import _rag  # noqa: E402
-from ask import handler as AskHandler  # noqa: E402
+from ask import _safe_json, handler as AskHandler  # noqa: E402
 
 # Random per run: only needs to be non-empty so the generation path is taken.
 FAKE_KEY = secrets.token_hex(8)
@@ -144,6 +144,16 @@ class ProofOfWorkTests(unittest.TestCase):
         forged = proof["token"].rsplit(".", 1)[0] + ".deadbeef"
         self.assertFalse(_pow.verify({"token": forged, "counter": proof["counter"]}, "1.2.3.4"))
         self.assertFalse(_pow.verify(None, "1.2.3.4"))
+
+
+class SafeJsonTests(unittest.TestCase):
+    def test_escapes_markup_and_round_trips(self):
+        body = {"answer": "<script>alert(1)</script> AT&T &lt; [1]"}
+        raw = _safe_json(body)
+        self.assertNotIn(b"<", raw)
+        self.assertNotIn(b">", raw)
+        self.assertNotIn(b"&", raw)
+        self.assertEqual(json.loads(raw), body)
 
 
 class EndpointTests(unittest.TestCase):

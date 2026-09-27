@@ -1,4 +1,5 @@
 from http.server import BaseHTTPRequestHandler
+import html
 import json
 import os
 import re
@@ -31,6 +32,17 @@ def _rate_limited(client_id: str) -> bool:
     return limited
 
 
+def _safe_json(body) -> bytes:
+    """Serialize a JSON response with HTML-significant characters escaped.
+
+    Replies are served as application/json with nosniff, and the page renders
+    them as text, but escaping <, > and & means no part of a reply (which can
+    echo retrieved text chosen by the question) can ever be parsed as markup.
+    """
+    text = json.dumps(body, ensure_ascii=True)
+    return html.escape(text, quote=False).replace("&lt;", "\\u003c").replace("&gt;", "\\u003e").replace("&amp;", "\\u0026").encode()
+
+
 class handler(BaseHTTPRequestHandler):
     """Ask My Portfolio: retrieval-augmented Q&A over the portfolio's own content."""
 
@@ -53,7 +65,7 @@ class handler(BaseHTTPRequestHandler):
 
         try:
             data = json.loads(self.rfile.read(length))
-        except (ValueError, UnicodeDecodeError):
+        except ValueError:  # includes UnicodeDecodeError
             data = None
         if not isinstance(data, dict):
             data = {}
@@ -87,13 +99,15 @@ class handler(BaseHTTPRequestHandler):
         self._respond(204, None)
 
     def _respond(self, status: int, body):
-        payload = json.dumps(body).encode() if body is not None else b""
+        payload = _safe_json(body) if body is not None else b""
         self.send_response(status)
         self.send_header("Content-Type", "application/json")
         self.send_header("Content-Length", str(len(payload)))
         self.send_header("Cache-Control", "no-store")
+        self.send_header("X-Content-Type-Options", "nosniff")
         self.end_headers()
         self.wfile.write(payload)
 
     def log_message(self, *_):
+        # Silence BaseHTTPRequestHandler's per-request stderr line; ask.py logs via _log instead.
         pass
