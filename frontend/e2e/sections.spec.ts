@@ -12,12 +12,18 @@ test.describe('sections', () => {
       await expect(section).toBeVisible();
 
       // Catches content that is in the DOM but invisible (e.g. stuck at opacity 0).
-      const hidden = await section.evaluate(el =>
-        [...el.querySelectorAll<HTMLElement>('.reveal')]
-          .filter(r => Number(getComputedStyle(r).opacity) < 0.99)
-          .map(r => r.className),
-      );
-      expect(hidden, `elements in #${id} still hidden after scroll`).toEqual([]);
+      // Poll rather than sleep: staggered transitions can take over a second.
+      await expect
+        .poll(
+          () =>
+            section.evaluate(el =>
+              [...el.querySelectorAll<HTMLElement>('.reveal')]
+                .filter(r => Number(getComputedStyle(r).opacity) < 0.99)
+                .map(r => r.className),
+            ),
+          { message: `elements in #${id} still hidden after scroll`, timeout: 3000 },
+        )
+        .toEqual([]);
 
       // Every section has a heading with visible text.
       await expect(section.locator('h1, h2').first()).toBeVisible();

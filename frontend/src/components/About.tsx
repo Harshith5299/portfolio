@@ -30,7 +30,7 @@ export function About() {
             </div>
             <div className="about__badges">
               <div className="about__badge">
-                <span className="about__badge-num">5+</span>
+                <span className="about__badge-num">8+</span>
                 <span className="about__badge-txt">Years in<br />Software Eng.</span>
               </div>
               <div className="about__badge about__badge--accent">
