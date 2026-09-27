@@ -60,12 +60,14 @@ export function Hero() {
               </svg>
             </a>
             <a href="#contact" className="btn btn-secondary">Get In Touch</a>
-            <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className="btn btn-ghost">
-              <svg viewBox="0 0 20 20" width="16" height="16" fill="currentColor">
-                <path fillRule="evenodd" d="M10 3a.75.75 0 01.75.75v7.44l2.97-2.97a.75.75 0 111.06 1.06l-4.25 4.25a.75.75 0 01-1.06 0L5.22 9.28a.75.75 0 111.06-1.06l2.97 2.97V3.75A.75.75 0 0110 3zm-6.25 13.5a.75.75 0 000 1.5h12.5a.75.75 0 000-1.5H3.75z" clipRule="evenodd" />
-              </svg>
-              Resume
-            </a>
+            {__HAS_RESUME__ && (
+              <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className="btn btn-ghost">
+                <svg viewBox="0 0 20 20" width="16" height="16" fill="currentColor">
+                  <path fillRule="evenodd" d="M10 3a.75.75 0 01.75.75v7.44l2.97-2.97a.75.75 0 111.06 1.06l-4.25 4.25a.75.75 0 01-1.06 0L5.22 9.28a.75.75 0 111.06-1.06l2.97 2.97V3.75A.75.75 0 0110 3zm-6.25 13.5a.75.75 0 000 1.5h12.5a.75.75 0 000-1.5H3.75z" clipRule="evenodd" />
+                </svg>
+                Resume
+              </a>
+            )}
             <a
               href="https://github.com/Harshith5299"
               target="_blank"
