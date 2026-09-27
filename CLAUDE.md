@@ -94,7 +94,7 @@ Push to `main` → `deploy-prod.yml` triggers automatically (installs `uv` for P
 
 1. `frontend/public/resume.pdf` — add your CV here; the Resume button in the Hero links to `/resume.pdf`.
 2. `frontend/public/og-image.png` — 1200×630 px image for OG/Twitter previews; referenced in `index.html`.
-3. Verify LinkedIn URL `linkedin.com/in/harshith-chittajallu` is correct.
+3. LinkedIn URL is `linkedin.com/in/harshith-ch` — confirmed correct.
 4. Enable Vercel Analytics in the Vercel dashboard (Project → Analytics → Enable).
 
 ## Commands
