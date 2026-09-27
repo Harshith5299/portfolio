@@ -163,9 +163,9 @@ export function Hero() {
           {
             icon: '🤖',
             title: 'AI Agent Platform',
-            status: 'in-dev',
-            desc: 'Multi-agent orchestration platform using LangGraph to automate enterprise workflows, triage tickets, and surface contextual insights.',
-            tags: ['LangGraph', 'FastAPI', 'Azure DevOps'],
+            status: 'planned',
+            desc: 'Multi-agent orchestration platform to automate enterprise workflows, triage tickets, and surface contextual insights.',
+            tags: ['LangGraph', 'FastAPI', 'TBD'],
             href: '#projects',
           },
         ].map(p => (
@@ -181,8 +181,8 @@ export function Hero() {
                 <span className="hero__feat-icon">{p.icon}</span>
                 <span className="hero__feat-title">{p.title}</span>
               </div>
-              <span className={`hero__feat-status hero__feat-status--${p.status === 'live' ? 'live' : 'in-dev'}`}>
-                {p.status === 'live' ? 'Live' : 'In Dev'}
+              <span className={`hero__feat-status hero__feat-status--${p.status === 'live' ? 'live' : p.status === 'planned' ? 'planned' : 'in-dev'}`}>
+                {p.status === 'live' ? 'Live' : p.status === 'planned' ? 'Planned' : 'In Dev'}
               </span>
             </div>
             <p className="hero__feat-desc">{p.desc}</p>

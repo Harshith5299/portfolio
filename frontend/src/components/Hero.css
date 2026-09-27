@@ -447,6 +447,11 @@
   color: var(--accent);
 }
 
+.hero__feat-status--planned {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+}
+
 .hero__feat-desc {
   font-size: 0.8rem;
   color: var(--text-3);
