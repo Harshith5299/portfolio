@@ -286,11 +286,21 @@
 @media (max-width: 480px) {
   .hero__ctas {
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
   }
 
   .hero__ctas .btn {
     width: 100%;
     justify-content: center;
+  }
+
+  .hero__stats {
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+  }
+
+  .hero__stat-divider {
+    display: none;
   }
 }

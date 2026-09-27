@@ -213,3 +213,14 @@
     gap: 40px;
   }
 }
+
+@media (max-width: 480px) {
+  .contact__form {
+    padding: 20px;
+  }
+
+  .contact__link-value {
+    white-space: normal;
+    word-break: break-all;
+  }
+}
