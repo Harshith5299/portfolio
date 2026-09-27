@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react';
+import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 import { GitHubIcon } from './Icons';
 import './Contact.css';
@@ -42,6 +42,13 @@ export function Contact() {
   const [formState, setFormState] = useState<FormState>('idle');
   const [fields, setFields] = useState({ name: '', email: '', message: '' });
   const [errorMsg, setErrorMsg] = useState('');
+  // Spam protection (see api/contact.py): a honeypot only bots fill in, and
+  // when the form appeared, since scripts submit faster than people type.
+  const [honeypot, setHoneypot] = useState('');
+  const startedAt = useRef(0);
+  useEffect(() => {
+    startedAt.current = Date.now();
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFields(f => ({ ...f, [e.target.name]: e.target.value }));
@@ -54,15 +61,15 @@ export function Contact() {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(fields),
+        body: JSON.stringify({ ...fields, website: honeypot, elapsedMs: Date.now() - startedAt.current }),
       });
       if (res.ok) {
         setFormState('success');
         setFields({ name: '', email: '', message: '' });
       } else {
-        // 400s carry a user-facing validation message; anything else is on our side.
+        // 400/429 carry a user-facing message; anything else is on our side.
         const body = await res.json().catch(() => null);
-        setErrorMsg(res.status === 400 && body?.error ? body.error : '');
+        setErrorMsg((res.status === 400 || res.status === 429) && body?.error ? body.error : '');
         setFormState('error');
       }
     } catch {
@@ -137,6 +144,19 @@ export function Contact() {
                 onChange={handleChange}
                 required
                 disabled={formState === 'loading'}
+              />
+            </div>
+
+            <div className="contact__hp" aria-hidden="true">
+              <label htmlFor="website">Website</label>
+              <input
+                id="website"
+                name="website"
+                type="text"
+                tabIndex={-1}
+                autoComplete="off"
+                value={honeypot}
+                onChange={e => setHoneypot(e.target.value)}
               />
             </div>
 

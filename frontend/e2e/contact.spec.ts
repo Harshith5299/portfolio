@@ -30,7 +30,8 @@ test.describe('contact form', () => {
     await page.getByRole('button', { name: 'Send Message' }).click();
 
     await expect(page.getByText('Message sent!')).toBeVisible();
-    expect(body).toEqual({ name: 'Test Recruiter', email: 'recruiter@example.com', message: 'Hello from the e2e suite' });
+    expect(body).toMatchObject({ name: 'Test Recruiter', email: 'recruiter@example.com', message: 'Hello from the e2e suite', website: '' });
+    expect(typeof (body as { elapsedMs: unknown }).elapsedMs).toBe('number');
     await expect(page.locator('#name')).toHaveValue('');
   });
 
@@ -41,5 +42,21 @@ test.describe('contact form', () => {
     await page.fill('#message', 'hi');
     await page.getByRole('button', { name: 'Send Message' }).click();
     await expect(page.getByText('Something went wrong')).toBeVisible();
+  });
+
+  test('shows the rate-limit message', async ({ page }) => {
+    await page.route('**/api/contact', route =>
+      route.fulfill({ status: 429, json: { ok: false, error: 'Too many messages. Please try again later.' } }),
+    );
+    await page.fill('#name', 'Test');
+    await page.fill('#email', 't@example.com');
+    await page.fill('#message', 'hi');
+    await page.getByRole('button', { name: 'Send Message' }).click();
+    await expect(page.getByText('Too many messages. Please try again later.')).toBeVisible();
+  });
+
+  test('keeps the spam-trap field out of reach', async ({ page }) => {
+    await expect(page.locator('#website')).toHaveAttribute('tabindex', '-1');
+    await expect(page.locator('#website')).not.toBeInViewport();
   });
 });

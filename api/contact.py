@@ -4,6 +4,7 @@ import json
 import os
 import re
 import sys
+import time
 import urllib.error
 import urllib.request
 
@@ -26,6 +27,46 @@ MAX_NAME = 100
 MAX_EMAIL = 254
 MAX_MESSAGE = 5_000
 EMAIL_RE = re.compile(r"^[^@\s<>]+@[^@\s<>]+\.[^@\s<>]+$")
+
+# Spam protection, invisible to real visitors:
+#   - "website" is a hidden honeypot field; people never see it, bots fill it.
+#   - "elapsedMs" is how long the form was open before submit, measured in the
+#     browser (so clock skew doesn't matter); humans take longer than
+#     MIN_FILL_MS to type a message, scripts post instantly.
+#   - At most RATE_LIMIT sends per IP per RATE_WINDOW_S. The counter lives in
+#     this function instance's memory, so it's best-effort: it resets on cold
+#     starts and isn't shared between instances.
+HONEYPOT_FIELD = "website"
+MIN_FILL_MS = 3_000
+RATE_LIMIT = 5
+RATE_WINDOW_S = 3_600
+_sends_by_ip: dict[str, list[float]] = {}
+
+
+def looks_like_bot(data: dict) -> bool:
+    if str(data.get(HONEYPOT_FIELD, "")).strip():
+        return True
+    elapsed = data.get("elapsedMs")
+    if isinstance(elapsed, (int, float)) and not isinstance(elapsed, bool):
+        return elapsed < MIN_FILL_MS
+    return False  # older cached pages don't send elapsedMs; don't block them
+
+
+def rate_limited(ip: str) -> bool:
+    """Record a send attempt for ip; True if it's over the limit."""
+    now = time.time()
+    recent = [t for t in _sends_by_ip.get(ip, []) if now - t < RATE_WINDOW_S]
+    if len(recent) >= RATE_LIMIT:
+        _sends_by_ip[ip] = recent
+        return True
+    recent.append(now)
+    _sends_by_ip[ip] = recent
+    return False
+
+
+def client_ip(handler) -> str:
+    forwarded = handler.headers.get("X-Forwarded-For", "")
+    return forwarded.split(",")[0].strip() or handler.headers.get("X-Real-IP", "") or handler.client_address[0]
 
 
 def validate(data: dict) -> tuple[str, str, str, str | None]:
@@ -87,6 +128,12 @@ class handler(BaseHTTPRequestHandler):
             self._respond(400, {"ok": False, "error": "Invalid request."})
             return
 
+        if looks_like_bot(data):
+            # Pretend it worked so bots don't learn to adapt; nothing is sent.
+            log("warn", "contact spam blocked", **request_fields(self))
+            self._respond(200, {"ok": True, "message": "Message sent!"})
+            return
+
         name, email, message, error = validate(data)
         if error:
             log("warn", "contact validation failed", error=error, **request_fields(self))
@@ -96,6 +143,12 @@ class handler(BaseHTTPRequestHandler):
         if not os.environ.get("RESEND_API_KEY"):
             log("error", "contact email not configured", name=name, email=email, preview=message[:80], **request_fields(self))
             self._respond(503, {"ok": False, "error": "Email delivery is not configured."})
+            return
+
+        ip = client_ip(self)
+        if rate_limited(ip):
+            log("warn", "contact rate limited", ip=ip, email=email, **request_fields(self))
+            self._respond(429, {"ok": False, "error": "Too many messages. Please try again later."})
             return
 
         try:
