@@ -1,6 +1,7 @@
 from http.server import BaseHTTPRequestHandler
 import json
 import os
+import re
 import sys
 import time
 
@@ -10,6 +11,7 @@ from _rag import answer  # noqa: E402
 
 MAX_BODY = 4 * 1024
 MAX_QUESTION = 300
+CONTROL_CHARS = re.compile(r"[\x00-\x1f\x7f]")
 RATE_LIMIT = 8  # requests per window per client, per warm instance (best effort)
 RATE_WINDOW = 60.0
 
@@ -49,7 +51,7 @@ class handler(BaseHTTPRequestHandler):
         if not question:
             self._respond(400, {"error": "Ask a question."})
             return
-        question = question[:MAX_QUESTION]
+        question = CONTROL_CHARS.sub(" ", question[:MAX_QUESTION])
 
         client_id = (self.headers.get("X-Forwarded-For", "") or self.client_address[0]).split(",")[0].strip()
         if _rate_limited(client_id):
@@ -60,7 +62,7 @@ class handler(BaseHTTPRequestHandler):
         log(
             "info",
             "ask answered",
-            question=question[:120],
+            question_len=len(question),
             mode=result["mode"],
             sources=[s["id"] for s in result["sources"]],
             total_ms=result["timings"]["total_ms"],
