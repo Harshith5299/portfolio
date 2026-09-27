@@ -28,6 +28,20 @@ MAX_MESSAGE = 5_000
 EMAIL_RE = re.compile(r"^[^@\s<>]+@[^@\s<>]+\.[^@\s<>]+$")
 
 
+def validate(data: dict) -> tuple[str, str, str, str | None]:
+    """Return (name, email, message, error); error is a user-facing message or None."""
+    name = str(data.get("name", "")).strip()
+    email = str(data.get("email", "")).strip()
+    message = str(data.get("message", "")).strip()
+    if not (name and email and message):
+        return name, email, message, "All fields are required."
+    if len(name) > MAX_NAME or len(email) > MAX_EMAIL or len(message) > MAX_MESSAGE:
+        return name, email, message, "One of the fields is too long."
+    if not EMAIL_RE.match(email):
+        return name, email, message, "Please enter a valid email address."
+    return name, email, message, None
+
+
 def send_email(name: str, email: str, message: str) -> None:
     """Send the contact message via Resend. Raises on any delivery failure."""
     api_key = os.environ["RESEND_API_KEY"]
@@ -68,24 +82,15 @@ class handler(BaseHTTPRequestHandler):
             data = json.loads(self.rfile.read(length))
             if not isinstance(data, dict):
                 raise ValueError("body must be a JSON object")
-        except (ValueError, json.JSONDecodeError):
+        except ValueError:  # includes json.JSONDecodeError
             log("warn", "contact bad request", **request_fields(self))
             self._respond(400, {"ok": False, "error": "Invalid request."})
             return
 
-        name = str(data.get("name", "")).strip()
-        email = str(data.get("email", "")).strip()
-        message = str(data.get("message", "")).strip()
-
-        if not (name and email and message):
-            log("warn", "contact validation failed", **request_fields(self))
-            self._respond(400, {"ok": False, "error": "All fields are required."})
-            return
-        if len(name) > MAX_NAME or len(email) > MAX_EMAIL or len(message) > MAX_MESSAGE:
-            self._respond(400, {"ok": False, "error": "One of the fields is too long."})
-            return
-        if not EMAIL_RE.match(email):
-            self._respond(400, {"ok": False, "error": "Please enter a valid email address."})
+        name, email, message, error = validate(data)
+        if error:
+            log("warn", "contact validation failed", error=error, **request_fields(self))
+            self._respond(400, {"ok": False, "error": error})
             return
 
         if not os.environ.get("RESEND_API_KEY"):
@@ -95,13 +100,9 @@ class handler(BaseHTTPRequestHandler):
 
         try:
             send_email(name, email, message)
-        except urllib.error.HTTPError as exc:
-            detail = exc.read().decode(errors="replace")[:300]
-            log("error", "contact send failed", status=exc.code, detail=detail, email=email, **request_fields(self))
-            self._respond(502, {"ok": False, "error": "Could not send your message."})
-            return
         except Exception as exc:
-            log("error", "contact send failed", error=str(exc), email=email, **request_fields(self))
+            detail = exc.read().decode(errors="replace")[:300] if isinstance(exc, urllib.error.HTTPError) else ""
+            log("error", "contact send failed", error=str(exc), detail=detail, email=email, **request_fields(self))
             self._respond(502, {"ok": False, "error": "Could not send your message."})
             return
 
