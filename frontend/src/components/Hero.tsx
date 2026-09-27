@@ -1,6 +1,8 @@
 import profilePic from '../assets/profile.jpg';
 import profilePicWebp from '../assets/profile.webp';
+import { PROJECTS } from '../data/projects';
 import { GitHubIcon } from './Icons';
+import { ProjectCard } from './ProjectCard';
 import './Hero.css';
 
 export function Hero() {
@@ -111,6 +113,17 @@ export function Hero() {
             </a>
           </div>
 
+        </div>
+
+        <div className="hero__side">
+          <div className="hero__image">
+            <div className="hero__image-ring" aria-hidden />
+            <div className="hero__image-ring hero__image-ring--2" aria-hidden />
+            <picture>
+              <source srcSet={profilePicWebp} type="image/webp" />
+              <img src={profilePic} alt="Harshith Chittajallu" className="hero__photo" />
+            </picture>
+          </div>
           <div className="hero__stats">
             <div className="hero__stat">
               <span className="hero__stat-num">8+</span>
@@ -128,15 +141,6 @@ export function Hero() {
             </div>
           </div>
         </div>
-
-        <div className="hero__image">
-          <div className="hero__image-ring" aria-hidden />
-          <div className="hero__image-ring hero__image-ring--2" aria-hidden />
-          <picture>
-            <source srcSet={profilePicWebp} type="image/webp" />
-            <img src={profilePic} alt="Harshith Chittajallu" className="hero__photo" />
-          </picture>
-        </div>
       </div>
 
       <div className="hero__featured-header">
@@ -145,56 +149,10 @@ export function Hero() {
       </div>
 
       <div className="hero__featured">
-        {[
-          {
-            icon: '🎬',
-            title: 'Netflix Clone',
-            status: 'in-dev',
-            desc: 'Full-stack streaming platform with user authentication, dynamic content catalogues, and personalised ML recommendations.',
-            tags: ['React', 'FastAPI', 'PostgreSQL'],
-            href: '#projects',
-          },
-          {
-            icon: '▶️',
-            title: 'YouTube Clone',
-            status: 'in-dev',
-            desc: 'Video-sharing platform with upload/transcode pipeline, search, subscriptions, and microservices architecture.',
-            tags: ['React', 'Kafka', 'FFmpeg'],
-            href: '#projects',
-          },
-          {
-            icon: '🤖',
-            title: 'AI Agent Platform',
-            status: 'planned',
-            desc: 'Multi-agent orchestration platform to automate enterprise workflows, triage tickets, and surface contextual insights.',
-            tags: ['LangGraph', 'FastAPI', 'TBD'],
-            href: '#projects',
-          },
-        ].map(p => (
-          <a
-            key={p.title}
-            href={p.href}
-            className="hero__feat-card"
-            target={p.href.startsWith('http') ? '_blank' : undefined}
-            rel={p.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-          >
-            <div className="hero__feat-header">
-              <div className="hero__feat-icon-title">
-                <span className="hero__feat-icon">{p.icon}</span>
-                <span className="hero__feat-title">{p.title}</span>
-              </div>
-              <span className={`hero__feat-status hero__feat-status--${p.status === 'live' ? 'live' : p.status === 'planned' ? 'planned' : 'in-dev'}`}>
-                {p.status === 'live' ? 'Live' : p.status === 'planned' ? 'Planned' : 'In Dev'}
-              </span>
-            </div>
-            <p className="hero__feat-desc">{p.desc}</p>
-            <div className="hero__feat-tags">
-              {p.tags.map(t => <span key={t} className="hero__feat-tag">{t}</span>)}
-            </div>
-          </a>
+        {PROJECTS.slice(0, 3).map(project => (
+          <ProjectCard key={project.title} project={project} compact />
         ))}
       </div>
-
     </section>
   );
 }
