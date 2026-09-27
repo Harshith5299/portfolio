@@ -1,0 +1,140 @@
+.sbp {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 14px 10px;
+  background: linear-gradient(135deg, #0a2e1a 0%, #091929 100%);
+  height: 100%;
+  font-size: 0.75rem;
+}
+
+.sbp__accounts {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.sbp__account {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(34, 197, 94, 0.06);
+  border: 1px solid rgba(34, 197, 94, 0.12);
+  border-radius: 6px;
+  padding: 6px 9px;
+  transition: border-color 0.4s, background 0.4s;
+}
+
+.sbp__account--credit {
+  border-color: rgba(52, 211, 153, 0.45);
+  background: rgba(52, 211, 153, 0.1);
+}
+
+.sbp__account--debit {
+  border-color: rgba(239, 68, 68, 0.35);
+  background: rgba(239, 68, 68, 0.07);
+}
+
+.sbp__account-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.sbp__account-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.sbp__account-name {
+  font-weight: 600;
+  color: rgba(226, 232, 240, 0.9);
+  font-size: 0.73rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sbp__account-id {
+  font-size: 0.62rem;
+  color: rgba(148, 163, 184, 0.55);
+  font-family: var(--font-mono, monospace);
+}
+
+.sbp__balance {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #4ade80;
+  font-family: var(--font-mono, monospace);
+  white-space: nowrap;
+  transition: color 0.4s;
+}
+
+.sbp__account--debit .sbp__balance { color: #f87171; }
+.sbp__account--credit .sbp__balance { color: #34d399; }
+
+.sbp__transfer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 0.7rem;
+  color: rgba(148, 163, 184, 0.35);
+  padding: 2px 0;
+  transition: color 0.3s;
+}
+
+.sbp__transfer--active {
+  color: rgba(74, 222, 128, 0.85);
+}
+
+.sbp__transfer-arrow {
+  font-size: 0.9rem;
+  transition: transform 0.3s;
+}
+
+.sbp__transfer-arrow--moving {
+  animation: sbp-slide 0.9s ease-in-out infinite alternate;
+}
+
+@keyframes sbp-slide {
+  from { transform: translateX(-4px); }
+  to   { transform: translateX(4px); }
+}
+
+.sbp__transfer-amount {
+  font-weight: 700;
+  font-family: var(--font-mono, monospace);
+}
+
+.sbp__stack {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding-top: 4px;
+  border-top: 1px solid rgba(148, 163, 184, 0.1);
+}
+
+.sbp__tech {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: rgba(74, 222, 128, 0.6);
+  letter-spacing: 0.04em;
+}
+
+.sbp__sep {
+  color: rgba(148, 163, 184, 0.25);
+  font-size: 0.65rem;
+}

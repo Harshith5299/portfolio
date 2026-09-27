@@ -23,6 +23,7 @@ frontend/           React SPA (Vite)
     og-image.png    ← ADD THIS: 1200×630 OG preview image (not yet in repo)
   src/
     components/     One .tsx + .css file per section
+      previews/     Lazy-loaded project preview components (code-split per project)
     data/
       projects.ts   PROJECTS array — edit here to add/update portfolio projects
       learning.ts   LEARNING_ITEMS array — edit here to add courses/certs
@@ -31,6 +32,8 @@ frontend/           React SPA (Vite)
 api/                Python Vercel functions
   contact.py        Contact form handler
   log.py            Client-side error beacon (hardened, rate-limited)
+docs/               Agent-readable documentation
+  AGENT_GUIDE.md    Comprehensive guide for AI agents working in this repo
 ```
 
 ## Sections (render order)
@@ -49,7 +52,9 @@ Nav links mirror this order. Adding a new section: create `ComponentName.tsx` + 
 ## Content editing cheat-sheet
 
 **Add a portfolio project** → edit `src/data/projects.ts`, push to `PROJECTS`.
-Fields: `title`, `description`, `tags[]`, `status` (`live|in-dev|coming-soon`), `gradient`, `icon`, `builtBy` (`solo|agent-assisted|collaborative`), optional `liveUrl`, `repoUrl`.
+Fields: `title`, `description`, `tags[]`, `status` (`live|in-dev|coming-soon`), `gradient`, `icon`, `builtBy` (`solo|agent-assisted|collaborative`), optional `liveUrl`, `repoUrl`, `previewId`.
+
+`previewId` links to a lazily-loaded preview component in `src/components/previews/`. Set it when the project has no live URL but you want an interactive visual inside the card. See **`docs/AGENT_GUIDE.md`** for how to add a new preview.
 
 **Add a course / cert** → edit `src/data/learning.ts`, push to `LEARNING_ITEMS`.
 Fields: `title`, `platform`, `type` (`course|certification|project`), `status` (`planned|in-progress|completed`), `description`, `tags[]`, optional `builtBy`, `repoUrl`, `certUrl`.

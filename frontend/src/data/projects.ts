@@ -9,9 +9,35 @@ export interface Project extends CardItem {
   gradient: string;
   icon: string;
   liveUrl?: string;
+  /** Identifier for a lazily-loaded inline preview component. Replaces the gradient banner. */
+  previewId?: string;
 }
 
 export const PROJECTS: Project[] = [
+  {
+    title: 'Event Syncer',
+    description:
+      'Python FastAPI + React service that reconciles CRM and calendar data — normalises records from two sources, scores cross-source matches, surfaces conflicts, and flags data-quality issues with a filterable React dashboard.',
+    tags: ['Python', 'FastAPI', 'React', 'Vite', 'Data Reconciliation', 'REST API'],
+    status: 'live',
+    gradient: 'linear-gradient(135deg, #0ea5e9 0%, #0d1f38 100%)',
+    icon: '🔄',
+    builtBy: 'agent-assisted',
+    repoUrl: 'https://github.com/Harshith5299/event_syncer',
+    previewId: 'event-syncer',
+  },
+  {
+    title: 'Spring Bank',
+    description:
+      'Full-stack banking application with a Spring Boot REST API backed by MySQL and a React frontend — supports account creation, balance enquiries, fund transfers, and a full transaction history with sender/receiver relationships.',
+    tags: ['Java', 'Spring Boot', 'MySQL', 'React', 'REST API', 'JPA'],
+    status: 'live',
+    gradient: 'linear-gradient(135deg, #22c55e 0%, #0d1f38 100%)',
+    icon: '🏦',
+    builtBy: 'solo',
+    repoUrl: 'https://github.com/Harshith5299/spring-bank',
+    previewId: 'spring-bank',
+  },
   {
     title: 'Netflix Clone',
     description:
