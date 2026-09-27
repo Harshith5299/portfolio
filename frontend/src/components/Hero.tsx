@@ -18,11 +18,20 @@ export function Hero() {
           </div>
           <div className="hero__companies">
             <span className="hero__companies-label">Previously at</span>
-            <span className="hero__company">Amazon</span>
+            <span className="hero__company hero__company--amazon">
+              <span className="hero__company-icon" aria-hidden>a</span>
+              Amazon
+            </span>
             <span className="hero__companies-sep">·</span>
-            <span className="hero__company">GE Vernova</span>
+            <span className="hero__company hero__company--ge">
+              <span className="hero__company-icon" aria-hidden>GE</span>
+              GE Vernova
+            </span>
             <span className="hero__companies-sep">·</span>
-            <span className="hero__company">Wells Fargo</span>
+            <span className="hero__company hero__company--wf">
+              <span className="hero__company-icon" aria-hidden>WF</span>
+              Wells Fargo
+            </span>
           </div>
           <p className="hero__tagline">
             Building scalable backend services, modern web UIs, and AI&#8209;driven
@@ -63,7 +72,7 @@ export function Hero() {
               LinkedIn
             </a>
             <a
-              href="https://wa.me/qr/XEM5XZW3IWUUO1"
+              href="https://wa.me/14088230811"
               target="_blank"
               rel="noopener noreferrer"
               className="btn btn-ghost"
@@ -113,6 +122,11 @@ export function Hero() {
         </div>
       </div>
 
+      <div className="hero__featured-header">
+        <span className="hero__featured-label">Featured Work</span>
+        <h2 className="hero__featured-title">A sample of what I'm building</h2>
+      </div>
+
       <div className="hero__featured">
         {[
           {
@@ -132,11 +146,11 @@ export function Hero() {
             href: '#projects',
           },
           {
-            icon: '🛡️',
-            title: 'Cybersecurity Dashboard',
+            icon: '🤖',
+            title: 'AI Agent Platform',
             status: 'in-dev',
-            desc: 'AI-driven banking security tool using LangGraph agents to surface contextual risk insights and reduce manual review time.',
-            tags: ['LangGraph', 'FastAPI', 'AWS'],
+            desc: 'Multi-agent orchestration platform using LangGraph to automate enterprise workflows, triage tickets, and surface contextual insights.',
+            tags: ['LangGraph', 'FastAPI', 'Azure DevOps'],
             href: '#projects',
           },
         ].map(p => (

@@ -291,12 +291,111 @@
 }
 
 .hero__company {
-  color: var(--text-2);
-  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  padding: 3px 10px 3px 4px;
+  border-radius: 20px;
+  border: 1px solid;
+  letter-spacing: 0.01em;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.hero__company:hover {
+  transform: translateY(-1px);
+}
+
+.hero__company-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  font-size: 0.65rem;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.hero__company--amazon {
+  color: #FF9900;
+  background: rgba(255, 153, 0, 0.08);
+  border-color: rgba(255, 153, 0, 0.3);
+}
+
+.hero__company--amazon:hover {
+  box-shadow: 0 4px 12px rgba(255, 153, 0, 0.2);
+}
+
+.hero__company--amazon .hero__company-icon {
+  background: #FF9900;
+  color: #111;
+  font-style: italic;
+}
+
+.hero__company--ge {
+  color: #4A9EE0;
+  background: rgba(74, 158, 224, 0.08);
+  border-color: rgba(74, 158, 224, 0.3);
+}
+
+.hero__company--ge:hover {
+  box-shadow: 0 4px 12px rgba(74, 158, 224, 0.2);
+}
+
+.hero__company--ge .hero__company-icon {
+  background: #4A9EE0;
+  color: #fff;
+  font-size: 0.55rem;
+}
+
+.hero__company--wf {
+  color: #e8473f;
+  background: rgba(232, 71, 63, 0.08);
+  border-color: rgba(232, 71, 63, 0.3);
+}
+
+.hero__company--wf:hover {
+  box-shadow: 0 4px 12px rgba(232, 71, 63, 0.2);
+}
+
+.hero__company--wf .hero__company-icon {
+  background: #e8473f;
+  color: #fff;
+  font-size: 0.55rem;
 }
 
 .hero__companies-sep {
   color: var(--border);
+}
+
+/* Featured section header */
+.hero__featured-header {
+  max-width: 1100px;
+  width: 100%;
+  margin-top: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+}
+
+.hero__featured-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+}
+
+.hero__featured-title {
+  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
 }
 
 /* Featured project cards */
@@ -306,7 +405,7 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
-  margin-top: 40px;
+  margin-top: 16px;
 }
 
 .hero__feat-card {
