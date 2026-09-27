@@ -2,7 +2,7 @@
 
 This document is written for AI coding agents. It covers the intent behind this portfolio, how to work in the codebase without breaking things, how to add new content correctly, and how to use the repo as reliable context for ongoing work.
 
-Read **`CLAUDE.md`** at the repo root first — it has the quick-reference cheat-sheet. This guide goes deeper on intent, compatibility rules, and the preview system.
+Read **`CLAUDE.md`** at the repo root first — it has the quick-reference cheat-sheet. This guide goes deeper on intent, compatibility rules, and the preview system. For history, testing, SonarCloud and tooling, see **`docs/agent-handbook/`**.
 
 ---
 
@@ -149,9 +149,9 @@ The shared memory directory is at `/tmp/claude/memory/team/silo/`. Rules for wha
 
 | Workflow | Trigger | What it checks |
 |---|---|---|
-| `ci.yml` | Push / PR | ESLint + Vite build. Must pass for merge. |
+| `ci.yml` | Push / PR | ESLint + Vite build, Python API tests, Playwright E2E. Must pass for merge. |
 | `deploy-prod.yml` | Push to `main` | Installs Node 24 + uv, builds, deploys to Vercel. |
-| `trivy.yml` | Push / PR | Container image vulnerability scan. Informational. |
+| `trivy.yml` | PR / `main` / weekly | Filesystem, dependency, secret and misconfiguration scan. |
 
 SonarCloud Automatic Analysis runs on every push to `main` and every PR via the SonarCloud GitHub App (not a workflow). Do not add a `sonarcloud.yml` — it was intentionally removed.
 

@@ -2,6 +2,8 @@
 
 Personal portfolio site for Harshith Chittajallu. Audience: software engineering recruiters and bots. URL: harshithportfolio.com.
 
+**New agents start at [`docs/agent-handbook/README.md`](docs/agent-handbook/README.md)**: project history, testing and SonarCloud rules, connectors and limits, and a list of rules to save to memory.
+
 ## Stack
 
 | Layer | Tech |
@@ -38,7 +40,8 @@ api/                Python Vercel functions
   contact.py        Contact form handler (sends via Resend)
   log.py            Client-side error beacon (hardened, rate-limited)
 docs/               Agent-readable documentation
-  AGENT_GUIDE.md    Comprehensive guide for AI agents working in this repo
+  AGENT_GUIDE.md    Preview system, content conventions, compatibility checklist
+  agent-handbook/   Start here: history, architecture, testing, SonarCloud, tools, learning guide
 ```
 
 ## Sections (render order)
