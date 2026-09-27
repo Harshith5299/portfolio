@@ -17,17 +17,7 @@ export function Hero() {
             <span className="hero__role">Full Stack &amp; Gen AI Developer</span>
           </div>
           <div className="hero__companies">
-            <span className="hero__companies-label">Previously at</span>
-            <span className="hero__company hero__company--amazon">
-              {/* Amazon smile-arrow — hand-drawn from brand geometry; not in Simple Icons (trademark removed) */}
-              <span className="hero__company-icon" aria-hidden>
-                <svg viewBox="0 0 28 10" fill="currentColor" width="28" height="10">
-                  <path d="M1 7 Q14 2 25 7 L27 5.5 L25 9 Q14 4.5 3 9 Z"/>
-                </svg>
-              </span>
-              Amazon
-            </span>
-            <span className="hero__companies-sep">·</span>
+            <span className="hero__companies-label">Experience at</span>
             <span className="hero__company hero__company--ge">
               {/* General Electric — Simple Icons siGeneralelectric (MIT) */}
               <span className="hero__company-icon" aria-hidden>
@@ -46,6 +36,16 @@ export function Hero() {
                 </svg>
               </span>
               Wells Fargo
+            </span>
+            <span className="hero__companies-sep">·</span>
+            <span className="hero__company hero__company--amazon">
+              {/* Amazon smile-arrow — hand-drawn from brand geometry; not in Simple Icons (trademark removed) */}
+              <span className="hero__company-icon" aria-hidden>
+                <svg viewBox="0 0 28 10" fill="currentColor" width="28" height="10">
+                  <path d="M1 7 Q14 2 25 7 L27 5.5 L25 9 Q14 4.5 3 9 Z"/>
+                </svg>
+              </span>
+              Amazon
             </span>
           </div>
           <p className="hero__tagline">
@@ -113,7 +113,7 @@ export function Hero() {
 
           <div className="hero__stats">
             <div className="hero__stat">
-              <span className="hero__stat-num">5+</span>
+              <span className="hero__stat-num">8+</span>
               <span className="hero__stat-label">Years Experience</span>
             </div>
             <div className="hero__stat-divider" aria-hidden />
