@@ -43,10 +43,10 @@
 }
 
 .hero__inner {
-  max-width: 1400px;
+  max-width: 1100px;
   width: 100%;
   display: grid;
-  grid-template-columns: 1fr 1.5fr;
+  grid-template-columns: 1fr 1fr;
   gap: 60px;
   align-items: center;
 }
@@ -58,7 +58,7 @@
 }
 
 .hero__name {
-  font-size: clamp(3rem, 5.5vw, 5.5rem);
+  font-size: clamp(2.4rem, 5vw, 4rem);
   font-weight: 800;
   line-height: 1.1;
   letter-spacing: -0.02em;
@@ -69,7 +69,7 @@
 }
 
 .hero__role-line {
-  font-size: clamp(1.4rem, 2.8vw, 1.9rem);
+  font-size: clamp(1.1rem, 2.5vw, 1.4rem);
   color: var(--text-2);
   font-weight: 400;
   min-height: 1.8em;
@@ -81,7 +81,7 @@
 }
 
 .hero__tagline {
-  font-size: 1.15rem;
+  font-size: 1rem;
   color: var(--text-2);
   line-height: 1.7;
   max-width: 480px;
@@ -134,7 +134,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  --photo-size: min(660px, 85vw);
+  --photo-size: min(330px, 85vw);
 }
 
 .hero__image-ring {
@@ -145,13 +145,13 @@
 }
 
 .hero__image-ring {
-  width: calc(var(--photo-size) + 50px);
-  height: calc(var(--photo-size) + 50px);
+  width: calc(var(--photo-size) + 40px);
+  height: calc(var(--photo-size) + 40px);
 }
 
 .hero__image-ring--2 {
-  width: calc(var(--photo-size) + 120px);
-  height: calc(var(--photo-size) + 120px);
+  width: calc(var(--photo-size) + 100px);
+  height: calc(var(--photo-size) + 100px);
   border-color: rgba(139, 92, 246, 0.12);
   animation-delay: 0.5s;
 }
@@ -247,7 +247,7 @@
   }
 
   .hero__image {
-    --photo-size: min(400px, 85vw);
+    --photo-size: min(260px, 85vw);
   }
 }
 
