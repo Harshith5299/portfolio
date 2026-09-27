@@ -124,7 +124,7 @@
   z-index: 998;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 640px) {
   .navbar__hamburger {
     display: flex;
   }

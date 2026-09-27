@@ -1,44 +1,8 @@
-import { useEffect, useState } from 'react';
 import profilePic from '../assets/profile.jpg';
 import { GitHubIcon } from './Icons';
 import './Hero.css';
 
-const ROLES = [
-  'Full Stack Developer',
-  'Gen AI Developer',
-  'AI/ML Engineer',
-  'Data Engineer',
-  'Backend Architect',
-];
-
 export function Hero() {
-  const [roleIndex, setRoleIndex] = useState(0);
-  const [text, setText] = useState('');
-  const [typing, setTyping] = useState(true);
-
-  useEffect(() => {
-    const role = ROLES[roleIndex];
-    let t: ReturnType<typeof setTimeout>;
-
-    if (typing) {
-      if (text.length < role.length) {
-        t = setTimeout(() => setText(role.slice(0, text.length + 1)), 75);
-      } else {
-        t = setTimeout(() => setTyping(false), 2200);
-      }
-    } else {
-      if (text.length > 0) {
-        t = setTimeout(() => setText(text.slice(0, -1)), 35);
-      } else {
-        t = setTimeout(() => {
-          setRoleIndex(i => (i + 1) % ROLES.length);
-          setTyping(true);
-        }, 0);
-      }
-    }
-    return () => clearTimeout(t);
-  }, [text, typing, roleIndex]);
-
   return (
     <section id="hero" className="hero">
       <div className="hero__grid-bg" aria-hidden />
@@ -47,12 +11,9 @@ export function Hero() {
 
       <div className="hero__inner">
         <div className="hero__text">
-          <p className="hero__greeting">Hi there, I'm</p>
           <h1 className="hero__name">Harshith<br />Chittajallu</h1>
           <div className="hero__role-line">
-            <span className="hero__role-prefix">I'm a </span>
-            <span className="hero__role">{text}</span>
-            <span className="hero__cursor" aria-hidden>|</span>
+            <span className="hero__role">Full Stack &amp; Gen AI Developer</span>
           </div>
           <p className="hero__tagline">
             Building scalable backend services, modern web UIs, and AI&#8209;driven
