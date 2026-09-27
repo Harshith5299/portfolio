@@ -1,6 +1,7 @@
 """Tests for the Ask My Portfolio RAG endpoint. Run: python3 -m unittest discover tests"""
 import json
 import os
+import secrets
 import sys
 import threading
 import unittest
@@ -10,6 +11,9 @@ from urllib.request import Request, urlopen
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "api"))
 import _rag  # noqa: E402
 from ask import handler as AskHandler  # noqa: E402
+
+# Random per run: only needs to be non-empty so the generation path is taken.
+FAKE_KEY = secrets.token_hex(8)
 
 
 class FakeClaude(BaseHTTPRequestHandler):
@@ -60,7 +64,7 @@ class RetrievalTests(unittest.TestCase):
 class GenerationTests(unittest.TestCase):
     def test_generates_with_claude_when_key_set(self):
         fake = serve(FakeClaude)
-        os.environ.update(ANTHROPIC_API_KEY="test", ANTHROPIC_BASE_URL=f"http://127.0.0.1:{fake.server_port}")
+        os.environ.update(ANTHROPIC_API_KEY=FAKE_KEY, ANTHROPIC_BASE_URL=f"http://127.0.0.1:{fake.server_port}")
         try:
             result = _rag.answer("What AI experience does he have?")
         finally:
@@ -74,7 +78,7 @@ class GenerationTests(unittest.TestCase):
         self.assertIn("[1] AI and agentic systems skills", body["messages"][0]["content"])
 
     def test_falls_back_when_api_unreachable(self):
-        os.environ.update(ANTHROPIC_API_KEY="test", ANTHROPIC_BASE_URL="http://127.0.0.1:9")
+        os.environ.update(ANTHROPIC_API_KEY=FAKE_KEY, ANTHROPIC_BASE_URL="http://127.0.0.1:9")
         try:
             result = _rag.answer("What AI experience does he have?")
         finally:
