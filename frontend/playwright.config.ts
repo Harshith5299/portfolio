@@ -30,7 +30,7 @@ export default defineConfig({
   webServer: BASE_URL
     ? undefined
     : {
-        command: `npm run build && npx vite preview --port ${PORT} --strictPort`,
+        command: `npm run build && npm run preview -- --port ${PORT} --strictPort`,
         url: `http://localhost:${PORT}`,
         reuseExistingServer: !process.env.CI,
         timeout: 120_000,
