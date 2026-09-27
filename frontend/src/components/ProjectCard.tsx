@@ -10,7 +10,7 @@ const STATUS_LABELS: Record<ProjectStatus, string> = {
   'coming-soon': 'Coming Soon',
 };
 
-function CardBadges({ project }: { project: Project }) {
+function CardBadges({ project }: Readonly<{ project: Project }>) {
   return (
     <div className="project-card__banner-badges">
       <span className={`project-card__badge project-card__badge--${project.status}`}>
@@ -39,10 +39,11 @@ interface ProjectCardProps {
   style?: React.CSSProperties;
 }
 
-export function ProjectCard({ project, compact, className, style }: ProjectCardProps) {
+export function ProjectCard({ project, compact, className, style }: Readonly<ProjectCardProps>) {
+  const classes = ['project-card', compact && 'project-card--compact', className].filter(Boolean).join(' ');
   return (
     <article
-      className={`project-card${compact ? ' project-card--compact' : ''}${className ? ` ${className}` : ''}`}
+      className={classes}
       style={style}
     >
       {project.previewId ? (
