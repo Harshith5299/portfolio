@@ -12,7 +12,7 @@ interface ExperienceItem {
 
 const EXPERIENCE: ExperienceItem[] = [
   {
-    title: 'Agentic AI Production Support Engineer',
+    title: 'Application Developer',
     company: 'GE Vernova',
     period: 'Jul 2026 — Present',
     domain: 'Agentic AI · Internal Productivity Platform',
