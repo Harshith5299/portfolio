@@ -52,7 +52,7 @@ export function Hero() {
               GitHub
             </a>
             <a
-              href="https://linkedin.com/in/harshith-chittajallu"
+              href="https://www.linkedin.com/in/harshith-ch"
               target="_blank"
               rel="noopener noreferrer"
               className="btn btn-ghost"
