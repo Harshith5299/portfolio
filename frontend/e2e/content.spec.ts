@@ -87,3 +87,15 @@ test('hero features the top three project cards, with the live RAG demo first an
     expect(box!.y + box!.height, 'RAG preview bottom edge').toBeLessThanOrEqual(viewport.height);
   }
 });
+
+test('hero name stays understated: semibold at most and no larger than 2.8rem', async ({ page }) => {
+  await page.goto('/');
+  const name = page.getByRole('heading', { level: 1 });
+  await expect(name).toBeVisible();
+  const { weight, size } = await name.evaluate(el => {
+    const cs = getComputedStyle(el);
+    return { weight: Number(cs.fontWeight), size: Number.parseFloat(cs.fontSize) };
+  });
+  expect(weight).toBeLessThanOrEqual(600);
+  expect(size).toBeLessThanOrEqual(2.8 * 16);
+});
